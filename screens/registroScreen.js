@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { 
   View,
+  TouchableOpacity,
+  Text,
   StyleSheet 
 } from 'react-native';
 
@@ -8,13 +10,15 @@ import TextInput from '../components/TextInput'
 import { theme } from '../core/theme'
 import Header from '../components/header'
 import Button from '../components/button'
+import Logo from '../components/logo'
+import Background from '../components/background'
 
 const registroScreen = ({ navigation }) => {
   return (
-    <View style={styleRegister.fondo}>
-      <View style={styleRegister.container}>
+    <Background>
+        <Logo></Logo>
         <Header>
-          Registrarse
+          Crear una cuenta
         </Header>
         <TextInput
           label="Nombre"
@@ -74,29 +78,29 @@ const registroScreen = ({ navigation }) => {
           secureTextEntry/>
 
         <Button mode="contained">
-          Registrarse
+          Crear cuenta
         </Button>
-      </View>
-    </View>
+        <View style={styles.row}>
+          <Text>¿Tienes cuenta? </Text>
+          <TouchableOpacity onPress={() => navigation.replace('Login')}>
+            <Text style={styles.link}>Iniciar Sesion</Text>
+          </TouchableOpacity>
+        </View>
+    </Background>
   );
 }
-const styleRegister = StyleSheet.create({
-  fondo: {
-      flex: 1,
-      width: '100%',
-      backgroundColor: theme.colors.surface,
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
   },
-  container: {
-      flex: 1,
-      padding: 20,
-      width: '100%',
-      maxWidth: 340,
-      alignSelf: 'center',
-      alignItems: 'center',
+  forgot: {
+    fontSize: 13,
+    color: theme.colors.secondary,
   },
-  text: {
-    flex: 2,
-    width: '100%',
-  }
+  link: {
+    fontWeight: 'bold',
+    color: theme.colors.primary,
+  },
 });
 export default registroScreen;

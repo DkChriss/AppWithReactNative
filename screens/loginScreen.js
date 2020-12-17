@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+//importaciones de react
+import React, { Component, useState } from 'react';
 import { 
   View,
   Text,
@@ -6,6 +7,7 @@ import {
   StyleSheet 
 } from 'react-native';
 
+//componentes
 import TextInput from '../components/TextInput'
 import Background from '../components/background'
 import Logo from '../components/logo'
@@ -13,7 +15,29 @@ import Button from '../components/button'
 import Header from '../components/header'
 import { theme } from '../core/theme'
 
+//Helpers
+import { emailValidator } from '../helpers/emailValidator'
+import { passwordValidator } from '../helpers/passwordValidator'
+
 const loginScreen = ({ navigation }) => {
+
+  const[email, setEmail] = useState({value: '', error: ''});
+
+  const[password, setPassword] = useState({value: '', error: ''})
+
+  const onLoginPressed = () => {
+    const emailError = emailValidator(email.value)
+    const passwordError = passwordValidator(password.value)
+
+    if (emailError || passwordError) {
+      setEmail({ ...email, error: emailError })
+      setPassword({ ...password, error: passwordError })
+      return
+    } else {
+      //ESPACIO PARA EL INICIAR SESION
+    }
+  }
+
   return (
     <Background>
       <Logo></Logo>
@@ -23,10 +47,10 @@ const loginScreen = ({ navigation }) => {
       <TextInput
         label="Correo electronico"
         returnKeyType="next"
-        value=""
-        onChangeText=""
-        error=""
-        errorText=""
+        value={email.value}
+        onChangeText={(text) => setEmail({value: text, error: ''})}
+        error={!!email.error}
+        errorText={email.error}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
@@ -35,10 +59,10 @@ const loginScreen = ({ navigation }) => {
       <TextInput
         label="Contraseña"
         returnKeyType="done"
-        value=""
-        onChangeText=""
-        error=""
-        errorText=""
+        value={password.value}
+        onChangeText={(text) => setPassword({value: text, error: ''})}
+        error={!!password.error}
+        errorText={password.error}
         secureTextEntry
       />
       <View style={styles.forgotPassword}>
@@ -48,7 +72,9 @@ const loginScreen = ({ navigation }) => {
             <Text style={styles.forgot}>¿Olvidaste tu contraseña?</Text>
           </TouchableOpacity>
         </View>
-        <Button mode="contained">
+        <Button 
+          mode="contained" 
+          onPress={ onLoginPressed }>
           Iniciar Sesion
         </Button>
         <View style={styles.row}>
@@ -56,7 +82,7 @@ const loginScreen = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.replace('Registro')}>
             <Text style={styles.link}>Registrarse</Text>
           </TouchableOpacity>
-      </View>
+        </View>
     </Background>
   );
 }
