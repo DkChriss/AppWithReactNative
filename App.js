@@ -1,7 +1,9 @@
 //Importaciones de React
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { TextInput, Button, Text, Avatar } from 'react-native-paper';
 
 //Importaciones de navegacion
 import { NavigationContainer } from '@react-navigation/native';
@@ -46,4 +48,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center'
   },
+  title:{
+    textAlign: 'center',
+    fontSize: 25,
+    fontFamily: 'Fantasy-Copperplate',
+    marginBottom: 20,
+  },
+  input: {
+      marginBottom: 10,
+      
+  },
+  avatar: {
+    size: 50,
+    alignContent: 'center'
+  },
+  
 });
