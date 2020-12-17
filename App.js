@@ -3,7 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { TextInput, Button, Text, Avatar } from 'react-native-paper';
 
 //Importaciones de navegacion
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,6 +12,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/loginScreen';
 import Home  from './screens/homeScreen';
 import Registro from './screens/registroScreen'
+import RegistroContacto from './screens/registerContactScreen';
+import ViewContacto from './screens/viewContact';
 
 const Stack = createStackNavigator();
 
@@ -35,7 +36,16 @@ export default function App() {
         <Stack.Screen
           name= "Registro"
           component={Registro}/>
+          
+          <Stack.Screen 
+          name="RegistroContacto"
+          component={RegistroContacto} />
+          <Stack.Screen
+          name="ViewContacto"
+          component={ViewContacto} />
       </Stack.Navigator>
+
+        
     </NavigationContainer>
   );
 }
@@ -48,19 +58,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center'
   },
-  title:{
-    textAlign: 'center',
-    fontSize: 25,
-    fontFamily: 'Fantasy-Copperplate',
-    marginBottom: 20,
-  },
-  input: {
-      marginBottom: 10,
-      
-  },
-  avatar: {
-    size: 50,
-    alignContent: 'center'
-  },
-  
 });
