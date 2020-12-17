@@ -53,7 +53,7 @@ const loginScreen = ({ navigation }) => {
         </Button>
         <View style={styles.row}>
           <Text>¿No tienes cuenta? </Text>
-          <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
+          <TouchableOpacity onPress={() => navigation.replace('Registro')}>
             <Text style={styles.link}>Registrarse</Text>
           </TouchableOpacity>
       </View>

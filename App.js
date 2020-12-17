@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 //Importaciones locales
 import Login from './screens/loginScreen';
 import Home  from './screens/homeScreen';
+import Registro from './screens/registroScreen'
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,9 @@ export default function App() {
         <Stack.Screen 
           name="Login" 
           component={Login} />
+        <Stack.Screen
+          name= "Registro"
+          component={Registro}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

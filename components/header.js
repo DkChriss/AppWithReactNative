@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
         fontSize: 21,
         color: theme.colors.primary,
         fontWeight: 'bold',
-        fontFamily: 'Robot',
         fontStyle: 'italic',
         paddingVertical: 12,
     },
