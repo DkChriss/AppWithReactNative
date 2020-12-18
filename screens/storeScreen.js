@@ -24,6 +24,10 @@ import { equalPasswordValidator } from '../helpers/equalPasswordValidator'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 
+//Importacion de Firebase
+
+import firebase from '../database/firebase'
+
 const storeScreen = ({ navigation }) => {
 
   const[name, setName] = useState({value: '', error: ''})
@@ -32,6 +36,17 @@ const storeScreen = ({ navigation }) => {
   const[email, setEmail] = useState({value: '', error: ''})
   const[password, setPassword] = useState({value: '', error: ''})
   const[equalPassword, setEqualPassword] = useState({value: '', error: ''})
+
+  const storeNewUser = () => {
+    firebase.db.collection('users').add({
+      name: name.value,
+      lastname: lastname.value,
+      nickname: nickname.value,
+      email: email.value,
+      password: password.value
+    });
+    navigation.navigate('Home');
+  }
 
 
   const onStorePressed = () => {
@@ -54,7 +69,10 @@ const storeScreen = ({ navigation }) => {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
       setEqualPassword({ ...equalPassword, error:equalPasswordError })
+      return;
     }
+
+    storeNewUser();
   }
 
 

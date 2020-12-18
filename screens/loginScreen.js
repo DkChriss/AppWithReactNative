@@ -7,6 +7,8 @@ import {
   StyleSheet 
 } from 'react-native';
 
+import firebase from '../database/firebase'
+
 //componentes
 import TextInput from '../components/TextInput'
 import Background from '../components/background'
@@ -25,16 +27,30 @@ const loginScreen = ({ navigation }) => {
 
   const[password, setPassword] = useState({value: '', error: ''})
 
+
+  const onLogin = () => {
+    firebase.firebase.auth()
+    .signInWithEmailAndPassword(email.value, password.value)
+    .then(() => {
+      navigation.navigate('viewContacts')
+    })
+    .catch(error => {
+      if (error.code === 'auth/user-not-found') {
+        setEmail({...email, error: "Credenciales incorrectas"})
+        setPassword({...password, error: "Credenciales incorrectas"})
+      }
+    });
+  }
+
   const onLoginPressed = () => {
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
-
     if (emailError || passwordError) {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
       return
     } else {
-      //ESPACIO PARA EL INICIAR SESION
+      onLogin();
     }
   }
 
