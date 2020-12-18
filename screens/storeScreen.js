@@ -13,6 +13,7 @@ import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
 
+
 const registroScreen = ({ navigation }) => {
   return (
     <Background>
