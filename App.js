@@ -40,9 +40,7 @@ export default function App() {
           <Stack.Screen 
           name="RegistroContacto"
           component={RegistroContacto} />
-          <Stack.Screen
-          name="ViewContacto"
-          component={ViewContacto} />
+         
       </Stack.Navigator>
 
         
