@@ -1,7 +1,8 @@
 //Importaciones de React
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 //Importaciones de navegacion
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,6 +12,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/loginScreen';
 import Home  from './screens/homeScreen';
 import Registro from './screens/registroScreen'
+import RegistroContacto from './screens/registerContactScreen';
+import ViewContacto from './screens/viewContact';
 
 const Stack = createStackNavigator();
 
@@ -33,7 +36,14 @@ export default function App() {
         <Stack.Screen
           name= "Registro"
           component={Registro}/>
+          
+          <Stack.Screen 
+          name="RegistroContacto"
+          component={RegistroContacto} />
+         
       </Stack.Navigator>
+
+        
     </NavigationContainer>
   );
 }
