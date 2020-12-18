@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
             <Button mode="contained" onPress={() => navigation.navigate('Login')}>
                 Iniciar Sesion
             </Button>
-            <Button mode="outlined" onPress={() => navigation.navigate('Registro')}>
+            <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
                 Registrarse
             </Button>
             <Button
@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
             </Button>
             <Button
             mode="outlined"
-            onPress={()=> navigation.navigate('ViewContacto')}>
+            onPress={()=> navigation.navigate('ViewContacts')}>
                 Ver Contactos
             </Button>
         </Background>

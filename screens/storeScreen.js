@@ -13,7 +13,8 @@ import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
 
-const registroScreen = ({ navigation }) => {
+
+const storeScreen = ({ navigation }) => {
   return (
     <Background>
         <Logo></Logo>
@@ -103,4 +104,4 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
   },
 });
-export default registroScreen;
+export default storeScreen;

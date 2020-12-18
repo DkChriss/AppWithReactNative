@@ -11,9 +11,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 //Importaciones locales
 import Login from './screens/loginScreen';
 import Home  from './screens/homeScreen';
-import Registro from './screens/registroScreen'
+import Register from './screens/storeScreen'
 import RegistroContacto from './screens/registerContactScreen';
-import ViewContacto from './screens/viewContact';
+import ViewContacts from './screens/viewContactsScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,19 +27,25 @@ export default function App() {
               headerTitleAlign: 'center',
         }}
       >
-        <Stack.Screen 
-          name="Home"
-          component={Home} />
-        <Stack.Screen 
-          name="Login" 
-          component={Login} />
-        <Stack.Screen
-          name= "Registro"
-          component={Registro}/>
+          <Stack.Screen 
+            name="Home"
+            component={Home} />
+
+          <Stack.Screen 
+            name="Login" 
+            component={Login} />
+            
+          <Stack.Screen
+            name= "Register"
+            component={Register}/>
           
           <Stack.Screen 
-          name="RegistroContacto"
-          component={RegistroContacto} />
+            name="RegistroContacto"
+            component={RegistroContacto} />
+
+          <Stack.Screen 
+            name="ViewContacts"
+            component={ViewContacts} />
          
       </Stack.Navigator>
 
