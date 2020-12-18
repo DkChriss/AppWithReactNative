@@ -14,6 +14,7 @@ import Home  from './screens/homeScreen';
 import Register from './screens/storeScreen'
 import RegistroContacto from './screens/registerContactScreen';
 import ViewContacts from './screens/viewContactsScreen';
+import ForgotPassword from './screens/forgotPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -46,7 +47,12 @@ export default function App() {
           <Stack.Screen 
             name="ViewContacts"
             component={ViewContacts} />
-         
+            
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+          />
+
       </Stack.Navigator>
 
         
