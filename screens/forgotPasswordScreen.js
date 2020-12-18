@@ -33,9 +33,6 @@ const forgotPasswordScreen = ({ navigation }) => {
         <Header>
             Recupera tu cuenta
         </Header>
-        <Text>
-            Ingresa tu correo electrónico para buscar tu cuenta.
-        </Text>
         <TextInput
             label="Correo electronico"
             returnKeyType="next"
