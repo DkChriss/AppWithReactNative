@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+//Importaciones de react
+import React, { Component, useState } from 'react';
 import { 
   View,
   TouchableOpacity,
@@ -6,15 +7,57 @@ import {
   StyleSheet 
 } from 'react-native';
 
-import TextInput from '../components/TextInput'
+
+//Importaciones Locales
 import { theme } from '../core/theme'
+
+//Importaciones de Componentes
+import TextInput from '../components/TextInput'
 import Header from '../components/header'
 import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
 
+//Importaciones de Helpers
+import { textValidator } from '../helpers/textValidator'
+import { equalPasswordValidator } from '../helpers/equalPasswordValidator'
+import { emailValidator } from '../helpers/emailValidator'
+import { passwordValidator } from '../helpers/passwordValidator'
 
 const storeScreen = ({ navigation }) => {
+
+  const[name, setName] = useState({value: '', error: ''})
+  const[lastname, setLastName] = useState({value: '', error: ''})
+  const[nickname, setNickName] = useState({value: '', error: ''})
+  const[email, setEmail] = useState({value: '', error: ''})
+  const[password, setPassword] = useState({value: '', error: ''})
+  const[equalPassword, setEqualPassword] = useState({value: '', error: ''})
+
+
+  const onStorePressed = () => {
+    
+    const nameError = textValidator(name.value, 'nombre')
+    const lastnameError = textValidator(lastname.value, 'apellido')
+    const nicknameError = textValidator(nickname.value, 'apodo')
+    const emailError = emailValidator(email.value)
+    const passwordError = passwordValidator(password.value)
+    const equalPasswordError = equalPasswordValidator(equalPassword.value, password.value)
+  
+    if (
+      nameError || lastnameError ||
+      nicknameError || emailError || 
+      passwordError || equalPasswordError
+    ) {
+      setName({ ...name, error: nameError })
+      setLastName({ ...lastname, error: lastnameError })
+      setNickName({ ...nickname, error: nicknameError })
+      setEmail({ ...email, error: emailError })
+      setPassword({ ...password, error: passwordError })
+      setEqualPassword({ ...equalPassword, error:equalPasswordError })
+    }
+  }
+
+
   return (
     <Background>
         <Logo></Logo>
@@ -24,37 +67,54 @@ const storeScreen = ({ navigation }) => {
         <TextInput
           label="Nombre"
           returnKeyType="done"
-          value=""
-          onChangeText=""
-          error=""
-          errorText=""
-          secureTextEntry
+          value={name.value}
+          onChangeText={
+            (text) => setName({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!name.error}
+          errorText={name.error}
         />
         <TextInput
           label="Apellido"
           returnKeyType="done"
-          value=""
-          onChangeText=""
-          error=""
-          errorText=""
-          secureTextEntry
+          value={lastname.value}
+          onChangeText={
+            (text) => setLastName({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!lastname.error}
+          errorText={lastname.error}
         />
         <TextInput
           label="Apodo"
           returnKeyType="done"
-          value=""
-          onChangeText=""
-          error=""
-          errorText=""
-          secureTextEntry
+          value={nickname.value}
+          onChangeText={
+            (text) => setNickName({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!nickname.error}
+          errorText={nickname.error}
         />
         <TextInput
           label="Correo electronico"
           returnKeyType="next"
-          value=""
-          onChangeText=""
-          error=""
-          errorText=""
+          value={email.value}
+          onChangeText={
+            (text) => setEmail({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!email.error}
+          errorText={email.error}
           autoCapitalize="none"
           autoCompleteType="email"
           textContentType="emailAddress"
@@ -63,22 +123,34 @@ const storeScreen = ({ navigation }) => {
         <TextInput
           label="Contraseña"
           returnKeyType="done"
-          value=""
-          onChangeText=""
-          error=""
-          errorText=""
+          value={password.value}
+          onChangeText={
+            (text) => setPassword({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!password.error}
+          errorText={password.error}
           secureTextEntry/>
 
         <TextInput
           label="Confirmar Contraseña"
           returnKeyType="done"
-          value=""
-          onChangeText=""
-          error=""
-          errorText=""
+          value={equalPassword.value}
+          onChangeText={
+            (text) => setEqualPassword({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!equalPassword.error}
+          errorText={equalPassword.error}
           secureTextEntry/>
 
-        <Button mode="contained">
+        <Button 
+          mode="contained"
+          onPress={ onStorePressed }>
           Crear cuenta
         </Button>
         <View style={styles.row}>
