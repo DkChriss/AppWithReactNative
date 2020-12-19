@@ -15,7 +15,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/loginScreen';
 import Home  from './screens/homeScreen';
 import Register from './screens/storeScreen'
-import RegistroContacto from './screens/registerContactScreen';
+import RegisterContacto from './screens/storeContactScreen';
 import ViewContacts from './screens/viewContactsScreen';
 import ForgotPassword from './screens/forgotPasswordScreen';
 import { theme } from './core/theme';
