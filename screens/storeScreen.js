@@ -38,14 +38,34 @@ const storeScreen = ({ navigation }) => {
   const[equalPassword, setEqualPassword] = useState({value: '', error: ''})
 
   const storeNewUser = () => {
-    firebase.db.collection('users').add({
-      name: name.value,
-      lastname: lastname.value,
-      nickname: nickname.value,
-      email: email.value,
-      password: password.value
-    });
-    navigation.navigate('Home');
+    try {
+      //SAVE IN USERS
+      firebase.firebase.auth()
+      .createUserWithEmailAndPassword(email.value, password.value)
+      .then(() => {
+        //SAVE IN DATABASE
+        firebase.db.collection('users').add({
+          name: name.value,
+          lastname: lastname.value,
+          nickname: nickname.value,
+          email: email.value,
+          password: password.value
+        });
+        //REDIRECCIONAR
+        navigation.navigate('ViewContacts')
+      })
+      .catch(error => {
+        if (error.code === 'auth/user-not-found') {
+          setEmail({...email, error: "Credenciales incorrectas"})
+          setPassword({...password, error: "Credenciales incorrectas"})
+        }
+        if (error.code === 'auth/email-already-in-use') {
+          setEmail({...email, error: "Este correo se encuentra registrado"})
+        }
+      }); 
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 

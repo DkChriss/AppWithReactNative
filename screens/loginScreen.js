@@ -32,10 +32,15 @@ const loginScreen = ({ navigation }) => {
     firebase.firebase.auth()
     .signInWithEmailAndPassword(email.value, password.value)
     .then(() => {
-      navigation.navigate('viewContacts')
+      navigation.navigate('ViewContacts')
     })
     .catch(error => {
+      console.log(error);
       if (error.code === 'auth/user-not-found') {
+        setEmail({...email, error: "Credenciales incorrectas"})
+        setPassword({...password, error: "Credenciales incorrectas"})
+      }
+      if (error.code === 'auth/wrong-password') {
         setEmail({...email, error: "Credenciales incorrectas"})
         setPassword({...password, error: "Credenciales incorrectas"})
       }

@@ -42,7 +42,7 @@ const viewContactsScreen = ({ navigation }) => {
         <View>
           <Button 
             mode="contained"
-            onPress={() => navigation.replace('RegistroContacto')}>
+            onPress={() => navigation.navigate('RegistroContacto')}>
               Registrar Nuevo Contacto
           </Button>
         </View>
@@ -75,4 +75,5 @@ const styles = StyleSheet.create({
     height: 44,
   },
 });
+
 export default viewContactsScreen;
