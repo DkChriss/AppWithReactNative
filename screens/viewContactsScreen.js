@@ -4,23 +4,24 @@ import {
   Text,
   StyleSheet,
   FlatList,
+  Image
 } from 'react-native';
 
 
 import { theme } from '../core/theme'
 import Header from '../components/header'
 import Button from '../components/button'
-import Logo from '../components/logo'
 import Background from '../components/background'
 
 const viewContactsScreen = ({ navigation }) => {
   return (
     <Background>
-        <Logo></Logo>
-
+        <Image source={require('../images/contacts.png')} style={styles.image} /> 
         <Header>
             Registro de Contactos
+            
         </Header>
+        
 
         <View style={styles.container}>
           <FlatList
@@ -74,5 +75,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+  image: {
+    width: 145,
+    height: 145,
+    //marginBottom: 8,
+    resizeMode: "contain",
+}, 
+  buttonAdd: {
+    width: 30,
+    borderRadius: '50%',
+    backgroundColor: '#3175AC',
+  }
 });
 export default viewContactsScreen;

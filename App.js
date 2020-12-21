@@ -12,7 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/loginScreen';
 import Home  from './screens/homeScreen';
 import Register from './screens/storeScreen'
-import RegisterContacto from './screens/storeContactScreen';
+import StoreContact from './screens/storeContactScreen';
 import ViewContacts from './screens/viewContactsScreen';
 import ForgotPassword from './screens/forgotPasswordScreen';
 
@@ -41,8 +41,8 @@ export default function App() {
             component={Register}/>
           
           <Stack.Screen 
-            name="RegistroContacto"
-            component={RegisterContacto} />
+            name="StoreContact"
+            component={StoreContact} />
 
           <Stack.Screen 
             name="ViewContacts"

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { 
-    StyleSheet
+    StyleSheet, 
+    ImageBackground
 } from 'react-native';
 
 import Background from '../components/background';
@@ -11,18 +12,18 @@ import { theme } from '../core/theme'
 
 const HomeScreen = ({ navigation }) => {
     return (
-        <Background>
+        <Background >
             <Logo />
             <Header>ScannerFriends</Header>
-            <Button mode="contained" onPress={() => navigation.navigate('Login')}>
+           <Button style={styles.bInit} mode="contained" onPress={() => navigation.navigate('Login')}>
                 Iniciar Sesion
             </Button>
-            <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
+            <Button style={styles.bStore} mode="outlined" onPress={() => navigation.navigate('Register')}>
                 Registrarse
             </Button>
             <Button
                 mode="outlined"
-                onPress={() => navigation.navigate('RegistroContacto')}
+                onPress={() => navigation.navigate('StoreContact')}
             >
             Registro de Contacto
             </Button>
@@ -43,5 +44,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    bInit: {
+        backgroundColor: '#3175AC',
+    },
+    
 });

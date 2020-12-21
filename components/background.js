@@ -7,6 +7,7 @@ const background = ({ children }) => (
   <ImageBackground
     resizeMode="repeat"
     style={styles.background}
+    source={require('../images/image.jpg')}
   >
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       {children}

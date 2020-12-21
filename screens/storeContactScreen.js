@@ -1,13 +1,12 @@
 import React,{ Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import {Avatar,  ImageBackground} from 'react-native-paper'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import TextInput from '../components/TextInput';
 import Button from '../components/button';
 import Background from '../components/background';
-import { block } from 'react-native-reanimated';
 import { theme } from '../core/theme'
 import { useState } from 'react';
+import Header from '../components/header';
 
 //helpers
 import { emailValidator } from '../helpers/emailValidator';
@@ -31,7 +30,7 @@ const storeContactScreen = () =>{
            const apellidoError = lastNameValidator(apellido.value)
            const aliasError = nickNameValidator(alias.value)
            const numberError = numberValidator(number.value)
-            if (emailError || textError || apellidoError) {
+            if (emailError || textError || apellidoError|| aliasError || numberError) {
                 setText({...text, error: textError})
               setEmail({ ...email, error: emailError })
               setApellido({ ...apellido, error: apellidoError })
@@ -45,10 +44,10 @@ const storeContactScreen = () =>{
         
    return(
     <Background> 
-    <View style={styles.container}>
-    <Image source={require('../images/user.jpg')} style={styles.image} />    
-        <Text style={styles.text}
-        > Contacto Nuevo</Text>
+   
+    <Image source={require('../images/user.png')} style={styles.image} />   
+    <Header>Contacto Nuevo</Header> 
+        
         <TextInput
         label="Nombre"
         returnKeyType="next"
@@ -112,7 +111,7 @@ const storeContactScreen = () =>{
         Guardar Contacto
         </Button>
         </TouchableHighlight>
-    </View>
+    
     </Background>
 );
 }
@@ -135,5 +134,11 @@ const styles= StyleSheet.create({
         textAlign:'center',
         backgroundColor: theme.colors.surface,
         fontFamily: 'Monospace-Monaco',
-    },      
+    },  
+    image: {
+        width: 145,
+        height: 145,
+        //marginBottom: 8,
+        resizeMode: "contain",
+    },    
 });
