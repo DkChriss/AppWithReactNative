@@ -31,7 +31,7 @@ const storeContactScreen = () =>{
            const apellidoError = lastNameValidator(apellido.value)
            const aliasError = nickNameValidator(alias.value)
            const numberError = numberValidator(number.value)
-            if (emailError || textError || apellidoError) {
+            if (emailError || textError || apellidoError || aliasError || numberError) {
                 setText({...text, error: textError})
               setEmail({ ...email, error: emailError })
               setApellido({ ...apellido, error: apellidoError })

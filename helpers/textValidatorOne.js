@@ -1,7 +1,8 @@
 export function textValidator(text){
-    const val = /^\d+$/;
+    const val = /[a-zA-Z]/ ;
+    const number = /[0-9]+/;
     if(!text || text.length <= 0) return "Ingrese su nombre"
     
-    if(val.test(text)) return 'No se permiten numeros'
+    if(!val.test(text) || number.test(text)) return 'No se permiten numeros'
 }
 
