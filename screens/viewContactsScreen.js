@@ -42,7 +42,7 @@ const viewContactsScreen = ({ navigation }) => {
         <View>
           <Button 
             mode="contained"
-            onPress={() => navigation.push('RegistroContacto')}>
+            onPress={() => navigation.push('StoreContact')}>
               Registrar Nuevo Contacto
           </Button>
         </View>
