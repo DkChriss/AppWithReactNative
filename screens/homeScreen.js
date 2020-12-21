@@ -20,6 +20,17 @@ const HomeScreen = ({ navigation }) => {
             <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
                 Registrarse
             </Button>
+            <Button
+                mode="outlined"
+                onPress={() => navigation.navigate('StoreContact')}
+            >
+            Registro de Contacto
+            </Button>
+            <Button
+            mode="outlined"
+            onPress={()=> navigation.navigate('ViewContacts')}>
+                Ver Contactos
+            </Button>
         </Background>
     )
 }

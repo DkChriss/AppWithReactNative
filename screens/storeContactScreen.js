@@ -98,7 +98,6 @@ const storeContactScreen = () =>{
         returnKeyType="next"
         value={email.value}
         onChangeText={(text) => setEmail({value: text, error: ''})}
-       // onChangeText={(Text)=> this}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
