@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { 
   View,
   Text,
   StyleSheet,
   FlatList,
+  ScrollView
 } from 'react-native';
 
 
@@ -12,8 +13,35 @@ import Header from '../components/header'
 import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
+import firebase from '../database/firebase'
+import { ListItem, Avatar} from 'react-native-elements'
+import { List } from 'react-native-paper';
 
 const viewContactsScreen = ({ navigation }) => {
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    firebase.db.collection("users").onSnapshot((querySnapshot) => {
+      const users =[];
+
+      querySnapshot.docs.forEach((doc) => {
+          console.log(doc.data());
+          const { email, name, lastname, nickname, password } = doc.data();
+          users.push({
+            id : doc.id,
+            name,
+            lastname,
+            email,
+            nickname,
+            password
+          })
+      });
+
+      setUsers(users);
+
+    });
+  }, []);
   return (
     <Background>
         <Logo></Logo>
@@ -21,31 +49,27 @@ const viewContactsScreen = ({ navigation }) => {
         <Header>
             Registro de Contactos
         </Header>
-
-        <View style={styles.container}>
-          <FlatList
-            data={[
-              {key: 'Devin'},
-              {key: 'Dan'},
-              {key: 'Dominic'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-            renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
-          />
-        </View>
-        <View>
-          <Button 
-            mode="contained"
-            onPress={() => navigation.push('RegistroContacto')}>
-              Registrar Nuevo Contacto
-          </Button>
-        </View>
+        <ScrollView>
+            {
+              users.map(user => {
+                return(
+                  <ListItem key={user.id}>
+                    <ListItem.Chevron/>
+                    <ListItem.Content>
+                        <ListItem.Title>{user.name}</ListItem.Title>
+                        <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{user.nickname}</ListItem.Subtitle>
+                    </ListItem.Content>
+                  </ListItem>
+                )
+              })
+            }
+            <Button 
+                mode="contained"
+                onPress={() => navigation.navigate('RegistroContacto')}>
+                Registrar Nuevo Contacto
+            </Button>
+         </ScrollView>
 
     </Background>
   );
