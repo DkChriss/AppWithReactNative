@@ -26,18 +26,16 @@ const HeaderNav = ({ scene, previous, navigation }) => {
   
   let options = scene.descriptor.options;
   let title = options.headerTitle !== undefined ? options.headerTitle : "";
-
   
-
   return (
     <Appbar.Header>
       <Appbar.BackAction
         onPress={() => {
           options.logOut && options.logOut !== undefined
-          ? options.back 
-          : firebase.firebase.auth()
+          ? firebase.firebase.auth()
             .signOut()
-            .then(() => navigation.navigate('Home'))
+            .then(() => navigation.navigate('Home')) 
+          : navigation.pop();
         }}
       />
       <Appbar.Content title={title} subtitle="" /> 
