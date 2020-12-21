@@ -1,8 +1,11 @@
 //Importaciones de React
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { StyleSheet} from 'react-native';
+import { Appbar } from 'react-native-paper'
+
+//DATABASE
+import firebase from './database/firebase'
 
 //Importaciones de navegacion
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,47 +18,80 @@ import Register from './screens/storeScreen'
 import RegistroContacto from './screens/registerContactScreen';
 import ViewContacts from './screens/viewContactsScreen';
 import ForgotPassword from './screens/forgotPasswordScreen';
+import { theme } from './core/theme';
 
 const Stack = createStackNavigator();
+
+const HeaderNav = ({ scene, previous, navigation }) => {
+  
+  let options = scene.descriptor.options;
+  let title = options.headerTitle !== undefined ? options.headerTitle : "";
+  
+  return (
+    <Appbar.Header>
+      <Appbar.BackAction
+        onPress={() => {
+          options.logOut && options.logOut !== undefined
+          ? firebase.firebase.auth()
+            .signOut()
+            .then(() => navigation.navigate('Home')) 
+          : navigation.pop();
+        }}
+      />
+      <Appbar.Content title={title} subtitle="" /> 
+    </Appbar.Header>
+  );
+};
+
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
         initialRouteName="Home" 
+        headerMode="screen"
         screenOptions={{
-              headerShown: true,
-              headerTitleAlign: 'center',
+          header: ({ scene, previous, navigation }) => (
+            <HeaderNav scene={scene} previous={previous} navigation={navigation} />
+          ),
         }}
       >
           <Stack.Screen 
             name="Home"
-            component={Home} />
+            component={Home} 
+            options={{
+              headerShown: false,
+            }}/>
 
           <Stack.Screen 
             name="Login" 
-            component={Login} />
+            component={Login} 
+            options={{ headerTitle: '' }}/>
             
           <Stack.Screen
             name= "Register"
-            component={Register}/>
-          
-          <Stack.Screen 
-            name="RegistroContacto"
-            component={RegistroContacto} />
-
-          <Stack.Screen 
-            name="ViewContacts"
-            component={ViewContacts} />
-            
+            component={Register}
+            options={{ headerTitle: ''}}/>            
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPassword}
           />
-
-      </Stack.Navigator>
-
-        
+          <Stack.Screen 
+            name="ViewContacts"
+            component={ViewContacts} 
+            options={{
+              logOut: true
+            }}
+          />
+          <Stack.Screen 
+            name="RegistroContacto"
+            component={RegistroContacto} 
+            options= {{
+              back: true,
+              headerTitle: "Nuevo Contacto"
+            }}
+          />  
+      </Stack.Navigator>      
     </NavigationContainer>
   );
 }
