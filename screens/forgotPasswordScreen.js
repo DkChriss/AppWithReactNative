@@ -8,6 +8,7 @@ import Header from '../components/header'
 import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
+import firebase from '../database/firebase'
 
 //Helpers
 import { emailValidator } from '../helpers/emailValidator';
@@ -24,7 +25,14 @@ const forgotPasswordScreen = ({ navigation }) => {
       setEmail({ ...email, error: emailError })
       return
     } else {
-      //ESPACIO PARA ENVIAR CONTRASEÑA A SU CORREO
+      var auth = firebase.firebase.auth();
+      var emailAddress = email.value;
+      
+      auth.sendPasswordResetEmail(emailAddress).then(function() {
+        console.log("funciona");
+      }).catch(function(error) {
+          setEmail({ ...email, error: "Ingrese un correo existente" })
+      });
     }
   }
   return (
