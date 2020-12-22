@@ -98,7 +98,6 @@ const storeContactScreen = (props) =>{
     }
 
     const getContact = async (id) => {
-        
         let user = firebase.firebase.auth().currentUser;
         let dbRef = firebase.db.collection(user.email).doc(id);
         let doc = await dbRef.get();
@@ -130,7 +129,13 @@ const storeContactScreen = (props) =>{
     }
 
     useEffect(() => {
-        getContact(props.route.params.userId);
+        if (
+            props && props.route && props.route.params && props.route.params.userId
+        ) {
+            getContact(props.route.params.userId);
+        } else {
+            setLoading(false)
+        }
     }, [])
 
     if(loading) {
