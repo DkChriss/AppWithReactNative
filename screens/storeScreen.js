@@ -42,15 +42,14 @@ const storeScreen = ({ navigation }) => {
       //SAVE IN USERS
       firebase.firebase.auth()
       .createUserWithEmailAndPassword(email.value, password.value)
-      .then(() => {
+      .then(cred => {
         //SAVE IN DATABASE
-        firebase.db.collection('users').add({
+        firebase.db.collection('users').doc(cred.user.uid).set({
           name: name.value,
           lastname: lastname.value,
-          nickname: nickname.value,
-          email: email.value,
-          password: password.value
-        });
+          nickname: nickname.value
+        })
+        
         //REDIRECCIONAR
         navigation.navigate('ViewContacts')
       })
