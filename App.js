@@ -80,6 +80,7 @@ export default function App() {
             name="ViewContacts"
             component={ViewContacts} 
             options={{
+              headerTitle: '',
               logOut: true
             }}
           />
@@ -88,7 +89,7 @@ export default function App() {
             component={StoreContact} 
             options= {{
               back: true,
-              headerTitle: "Nuevo Contacto"
+              headerTitle: ''
             }}
           />  
       </Stack.Navigator>      
