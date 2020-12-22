@@ -1,13 +1,15 @@
 import React,{ Component } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
-import {Avatar,  ImageBackground} from 'react-native-paper'
-import { TouchableHighlight } from 'react-native-gesture-handler'
+import { StyleSheet, View, Image } from 'react-native';
 import TextInput from '../components/TextInput';
 import Button from '../components/button';
 import Background from '../components/background';
-import { block } from 'react-native-reanimated';
 import { theme } from '../core/theme'
 import { useState } from 'react';
+
+import { ActivityIndicator, Colors } from 'react-native-paper';
+
+//DB
+import firebase from '../database/firebase'
 
 //helpers
 import { emailValidator } from '../helpers/emailValidator';
@@ -15,105 +17,209 @@ import { textValidator } from '../helpers/textValidatorOne';
 import { lastNameValidator } from '../helpers/lastNameValidator';
 import { nickNameValidator } from "../helpers/nickNameValidator";
 import { numberValidator } from "../helpers/numberValidator";
+import { useEffect } from 'react';
 
 
-const storeContactScreen = () =>{
-    
-        const[email, setEmail] = useState({value: '', error: ''});
-        const[text, setText] = useState({value: '', error: '' });
-        const[apellido, setApellido]= useState({value: '', error: ''});
-        const[alias, setAlias]= useState({value: '', error: ''});
-        const[number, setNumber]= useState({value: '', error: ''});
+const storeContactScreen = (props) =>{
 
-        const  validateFields = () => {
-            const emailError = emailValidator(email.value)
-           const textError = textValidator(text.value)
-           const apellidoError = lastNameValidator(apellido.value)
-           const aliasError = nickNameValidator(alias.value)
-           const numberError = numberValidator(number.value)
-            if (emailError || textError || apellidoError || aliasError || numberError) {
-                setText({...text, error: textError})
-              setEmail({ ...email, error: emailError })
-              setApellido({ ...apellido, error: apellidoError })
-              setAlias({ ...alias, error: aliasError })
-              setNumber({ ...number, error: numberError })
-              return
-            } else {
-              //
-            }
-          }
+    //INPUTS
+    const[name, setName] = useState({value: '', error: '' });
+    const[lastname, setLastName]= useState({value: '', error: ''});
+    const[alias, setAlias]= useState({value: '', error: ''});
+    const[number, setNumber]= useState({value: '', error: ''});
+    const[email, setEmail] = useState({value: '', error: ''});
+
+    //LOADING SCREEN
+    const [loading, setLoading] = useState(true)
+    //method
+    const [method, setMethod] = useState({value: 'store'})
+
+    const store = () => {
+        try {
+            let user = firebase.firebase.auth().currentUser;
+            
+            firebase.db.collection(user.email).add({
+                name: name.value,
+                lastname: lastname.value,
+                alias: alias.value,
+                number: number.value,
+                email: email.value
+            });
+            //REDIRECCIONAR
+            props.navigation.navigate('ViewContacts')
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const update = async () => {
+
+        let user = firebase.firebase.auth().currentUser
+        let contactId = props.route.params.userId
+        let dbRef = firebase.db.collection(user.email).doc(contactId);
+
+        await dbRef.set({
+            name: name.value,
+            lastname: lastname.value,
+            alias: alias.value,
+            number: number.value,
+            email: email.value
+        })
+
+        props.navigation.navigate('ViewContacts')
+    }
+
+    const  validateFields = () => {
+
+        let nameError = textValidator(name.value)
+        let lastnameError = lastNameValidator(lastname.value)
+        let aliasError = nickNameValidator(alias.value)
+        let numberError = numberValidator(number.value)
+        let emailError = emailValidator(email.value)
         
-   return(
-    <Background> 
-    <View style={styles.container}>
-    <Image source={require('../images/user.jpg')} style={styles.image} />    
-        <Text style={styles.text}
-        > Contacto Nuevo</Text>
-        <TextInput
-        label="Nombre"
-        returnKeyType="next"
-        value={text.value}
-        onChangeText={(text) => setText({value: text, error: ''})}
-        error={!!text.error}
-        errorText={text.error}
-        autoCapitalize="none"
-        autoCompleteType="text"
-        textContentType="textAddress"
-        keyboardType="text-address"/>
-        <TextInput
-        padding='0' 
-        label="Apellido"
-        returnKeyType="next"
-        value={apellido.value}
-        onChangeText={(apellido) => setApellido({value: apellido, error: ''})}
-        error={!!apellido.error}
-        errorText={apellido.error}
-        autoCapitalize="none"
-        autoCompleteType="text"
-        textContentType="textAddress"
-        keyboardType="text-address"/>
-        <TextInput 
-        label="Apodo"
-        returnKeyType="next"
-        value={alias.value}
-        onChangeText={(alias) => setAlias({value: alias, error: ''})}
-        error={!!alias.error}
-        errorText={alias.error}
-        autoCapitalize="none"
-        autoCompleteType="text"
-        textContentType="textAddress"
-        keyboardType="text-address"/>
-        <TextInput
-        label="Numero de Celular"
-        value={number.value}
-        onChangeText={(number) => setNumber({value: number, error: ''})}
-        error={!!number.error}
-        errorText={number.error}
-        autoCapitalize="none"
-        autoCompleteType="number"
-        textContentType="numberAddress"
-        keyboardType="number-address"/>
-        <TextInput 
-        label="Correo electronico"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({value: text, error: ''})}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"/>
-        <TouchableHighlight>
-        <Button
-        mode="contained"
-        onPress={ validateFields }>
-        Guardar Contacto
-        </Button>
-        </TouchableHighlight>
-    </View>
-    </Background>
-);
+        if (
+            nameError  || lastnameError || 
+            aliasError || numberError   || 
+            emailError
+        ) {
+            setName({...name, error: nameError})
+            setLastName({ ...lastname, error: lastnameError })
+            setAlias({ ...alias, error: aliasError })
+            setNumber({ ...number, error: numberError })
+            setEmail({ ...email, error: emailError })
+            return
+        }
+        if (method.value === 'store') {
+            store();
+        }
+        if (method.value === 'update') {
+            update();
+        }
+    }
+
+    const getContact = async (id) => {
+        let user = firebase.firebase.auth().currentUser;
+        let dbRef = firebase.db.collection(user.email).doc(id);
+        let doc = await dbRef.get();
+        let contact = doc.data();
+    
+        setName({
+            value: contact.name,
+            error: ''
+        })
+        setLastName({
+            value: contact.lastname,
+            error: ''
+        })
+        setAlias({
+            value: contact.alias,
+            error: ''
+        })
+        setNumber({
+            value: contact.number,
+            error: ''
+        })
+        setEmail({
+            value: contact.email,
+            error: ''
+        })
+
+        setLoading(false)
+        setMethod({value: 'update'})
+    }
+
+    useEffect(() => {
+        if (
+            props && props.route && props.route.params && props.route.params.userId
+        ) {
+            getContact(props.route.params.userId);
+        } else {
+            setLoading(false)
+        }
+    }, [])
+
+    if(loading) {
+        return (
+            <ActivityIndicator animating={true} color={Colors.red800} />
+        )
+    }
+        
+    return(
+        <Background> 
+        <View style={styles.container}>
+        <Image source={require('../images/user.jpg')} style={styles.image} />    
+            <TextInput
+            label="Nombre"
+            returnKeyType="next"
+            value={name.value}
+            onChangeText={(text) => setName({value: text, error: ''})}
+            error={!!name.error}
+            errorText={name.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="textAddress"
+            keyboardType="text-address"/>
+            <TextInput
+            padding='0' 
+            label="Apellido"
+            returnKeyType="next"
+            value={lastname.value}
+            onChangeText={
+                (text) => setLastName(
+                    {
+                        value: text, 
+                        error: ''
+                    }
+                )
+            }
+            error={!!lastname.error}
+            errorText={lastname.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="textAddress"
+            keyboardType="text-address"/>
+            <TextInput 
+            label="Apodo"
+            returnKeyType="next"
+            value={alias.value}
+            onChangeText={(text) => setAlias({value: text, error: ''})}
+            error={!!alias.error}
+            errorText={alias.error}
+            autoCapitalize="none"
+            autoCompleteType="text"
+            textContentType="textAddress"
+            keyboardType="text-address"/>
+            <TextInput
+                label="Numero de Celular"
+                value={number.value}
+                onChangeText={(number) => setNumber({value: number, error: ''})}
+                error={!!number.error}
+                errorText={number.error}
+                autoCapitalize="none"
+                autoCompleteType="number"
+                textContentType="numberAddress"
+                keyboardType="number-address"
+            />
+            <TextInput
+                label="Correo electronico"
+                returnKeyType="next"
+                value={email.value}
+                onChangeText={(text) => setEmail({value: text, error: ''})}
+                error={!!email.error}
+                errorText={email.error}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                textContentType="emailAddress"
+                keyboardType="email-address"
+            />
+            <Button
+            mode="contained"
+            onPress={ validateFields }>
+            Guardar Contacto
+            </Button>
+        </View>
+        </Background>
+    );
 }
 
 export default storeContactScreen;
