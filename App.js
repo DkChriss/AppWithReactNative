@@ -18,6 +18,7 @@ import Register from './screens/storeScreen'
 import StoreContact from './screens/storeContactScreen';
 import ViewContacts from './screens/viewContactsScreen';
 import ForgotPassword from './screens/forgotPasswordScreen';
+import Update from './screens/updateScreen';
 import { theme } from './core/theme';
 
 const Stack = createStackNavigator();
@@ -71,11 +72,22 @@ export default function App() {
           <Stack.Screen
             name= "Register"
             component={Register}
-            options={{ headerTitle: ''}}/>            
+            options={{ headerTitle: ''}}/>   
+          
+          <Stack.Screen
+            name= "Update"
+            component={Update}
+            options= {{
+              back: true,
+              headerTitle: ''
+            }}/>   
+
+
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPassword}
           />
+
           <Stack.Screen 
             name="ViewContacts"
             component={ViewContacts} 
