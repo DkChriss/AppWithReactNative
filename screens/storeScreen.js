@@ -4,7 +4,9 @@ import {
   View,
   TouchableOpacity,
   Text,
-  StyleSheet 
+  StyleSheet, 
+  ScrollView, 
+ 
 } from 'react-native';
 
 
@@ -90,13 +92,16 @@ const storeScreen = ({ navigation }) => {
       setEqualPassword({ ...equalPassword, error:equalPasswordError })
       return;
     }
+    
 
     storeNewUser();
   }
 
 
   return (
+    
     <Background>
+      <ScrollView  style={styles.scrollView}> 
         <Logo></Logo>
         <Header>
           Crear una cuenta
@@ -196,7 +201,9 @@ const storeScreen = ({ navigation }) => {
             <Text style={styles.link}>Iniciar Sesion</Text>
           </TouchableOpacity>
         </View>
+        </ScrollView>
     </Background>
+    
   );
 }
 const styles = StyleSheet.create({
@@ -211,6 +218,9 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
+  },
+  scrollView: {
+    marginHorizontal: 0,
   },
 });
 export default storeScreen;

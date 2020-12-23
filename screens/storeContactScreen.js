@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import TextInput from '../components/TextInput';
 import Button from '../components/button';
 import Background from '../components/background';
@@ -145,7 +145,10 @@ const storeContactScreen = (props) =>{
     }
         
     return(
+
+        
         <Background> 
+            <ScrollView  style={styles.scrollView}>
         <View style={styles.container}>
         <Image source={require('../images/user.jpg')} style={styles.image} />    
             <TextInput
@@ -155,12 +158,9 @@ const storeContactScreen = (props) =>{
             onChangeText={(text) => setName({value: text, error: ''})}
             error={!!name.error}
             errorText={name.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="textAddress"
-            keyboardType="text-address"/>
+
+            />
             <TextInput
-            padding='0' 
             label="Apellido"
             returnKeyType="next"
             value={lastname.value}
@@ -174,10 +174,7 @@ const storeContactScreen = (props) =>{
             }
             error={!!lastname.error}
             errorText={lastname.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="textAddress"
-            keyboardType="text-address"/>
+            />
             <TextInput 
             label="Apodo"
             returnKeyType="next"
@@ -185,10 +182,8 @@ const storeContactScreen = (props) =>{
             onChangeText={(text) => setAlias({value: text, error: ''})}
             error={!!alias.error}
             errorText={alias.error}
-            autoCapitalize="none"
-            autoCompleteType="text"
-            textContentType="textAddress"
-            keyboardType="text-address"/>
+
+            />
             <TextInput
                 label="Numero de Celular"
                 value={number.value}
@@ -196,9 +191,7 @@ const storeContactScreen = (props) =>{
                 error={!!number.error}
                 errorText={number.error}
                 autoCapitalize="none"
-                autoCompleteType="number"
-                textContentType="numberAddress"
-                keyboardType="number-address"
+                keyboardType="numeric"
             />
             <TextInput
                 label="Correo electronico"
@@ -218,6 +211,7 @@ const storeContactScreen = (props) =>{
             Guardar Contacto
             </Button>
         </View>
+        </ScrollView>
         </Background>
     );
 }
@@ -240,5 +234,8 @@ const styles= StyleSheet.create({
         textAlign:'center',
         backgroundColor: theme.colors.surface,
         fontFamily: 'Monospace-Monaco',
-    },      
+    },    
+    scrollView: {
+        marginHorizontal: 0,
+    },  
 });

@@ -2,7 +2,8 @@
 import React, { Component, useState } from 'react';
 import { 
   View,
-  StyleSheet 
+  StyleSheet, 
+  ScrollView
 } from 'react-native';
 
 import { ActivityIndicator, Colors } from 'react-native-paper';
@@ -125,7 +126,9 @@ const storeScreen = (props) => {
     }
 
     return (
+       
         <Background>
+             <ScrollView>
             <Logo></Logo>
             <Header>
             Actualizar Datos De Cuenta
@@ -221,7 +224,9 @@ const storeScreen = (props) => {
                 Actualizar Datos
             </Button>
             <View style={styles.row}/>
+            </ScrollView>
         </Background>
+        
     );
 }
 const styles = StyleSheet.create({

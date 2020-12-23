@@ -4,7 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet 
+  StyleSheet
 } from 'react-native';
 
 import firebase from '../database/firebase'
@@ -60,7 +60,9 @@ const loginScreen = ({ navigation }) => {
   }
 
   return (
-    <Background>
+  
+      <Background >
+      
       <Logo></Logo>
       <Header>
         Bienvenido
@@ -104,6 +106,7 @@ const loginScreen = ({ navigation }) => {
             <Text style={styles.link}>Registrarse</Text>
           </TouchableOpacity>
         </View>
+       
     </Background>
   );
 }
