@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import { FAB } from 'react-native-paper';
+import { FAB, Portal, Provider } from 'react-native-paper';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
@@ -46,20 +46,21 @@ const viewContactsScreen = ({navigation}) => {
     let dbRef = firebase.db.collection(user.email).doc(id)
     await dbRef.delete();
   }
+
+
+
+ 
+    const [state, setState] = React.useState({ open: false });
+  
+    const onStateChange = ({ open }) => setState({ open });
+  
+    const { open } = state;
   
   return (
     <BackgroundBack> 
     
     <View style={styles.container}>
       
-
-    <FAB
-    style={styles.fab}
-    small
-    icon="plus"
-    onPress={() => {navigation.navigate('StoreContact')}}
-  />
-            
 
 
         <View >
@@ -106,7 +107,28 @@ const viewContactsScreen = ({navigation}) => {
       
   </View>
     </View>
-  
+
+    <Provider>
+      <Portal>
+        <FAB.Group
+          open={open}
+          icon={open ? 'calendar-today' : 'plus'}
+          actions={[
+            {
+              icon: 'plus',
+              label: 'Agregar Contacto',
+              onPress: () =>  {navigation.navigate('StoreContact')}
+            },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+            }
+          }}
+        />
+      </Portal>
+    </Provider>   
+   
     </BackgroundBack>
   
   );
