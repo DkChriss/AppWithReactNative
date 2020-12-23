@@ -237,6 +237,6 @@ const styles= StyleSheet.create({
         fontFamily: 'Monospace-Monaco',
     },    
     scrollView: {
-        marginHorizontal: 5,
+        marginHorizontal: 0,
       },  
 });

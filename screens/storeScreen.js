@@ -4,7 +4,9 @@ import {
   View,
   TouchableOpacity,
   Text,
-  StyleSheet 
+  StyleSheet, 
+  ScrollView, 
+ 
 } from 'react-native';
 
 
@@ -96,6 +98,7 @@ const storeScreen = ({ navigation }) => {
 
 
   return (
+    <ScrollView  style={styles.scrollView}> 
     <Background>
         <Logo></Logo>
         <Header>
@@ -197,6 +200,7 @@ const storeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
     </Background>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -211,6 +215,9 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
+  },
+  scrollView: {
+    marginHorizontal: 0,
   },
 });
 export default storeScreen;

@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-
+import { FAB } from 'react-native-paper';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
@@ -16,7 +16,6 @@ import Header from '../components/header'
 import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
-import FabButton from '../components/FabButton'
 import BackgroundBack from '../components/backgroundBack'
 
 const viewContactsScreen = ({navigation}) => {
@@ -51,11 +50,16 @@ const viewContactsScreen = ({navigation}) => {
   return (
     <BackgroundBack> 
     
-        <View style={styles.container}>
+    <View style={styles.container}>
       
-      <FabButton
-          route='StoreContact'
-        style={{bottom: 80, right: 60, zIndex:1}} />
+
+    <FAB
+    style={styles.fab}
+    small
+    icon="plus"
+    onPress={() => {navigation.navigate('StoreContact')}}
+  />
+            
 
 
         <View >
@@ -135,6 +139,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#8340F7',
   },
 });
 
