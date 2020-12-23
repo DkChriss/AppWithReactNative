@@ -53,7 +53,11 @@ const viewContactsScreen = ({navigation}) => {
         <Header>
             Contactos
         </Header>
-
+        <Button 
+          mode="contained"
+          onPress={() => navigation.navigate('Update')}>
+            Actualizar Datos
+        </Button>
         {
           contacts.map(contact => {
             return (
