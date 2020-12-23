@@ -12,13 +12,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 //Importaciones locales
-import Login from './screens/loginScreen';
-import Home  from './screens/homeScreen';
+import Login from './screens/loginScreen'
+import Home  from './screens/homeScreen'
 import Register from './screens/storeScreen'
-import StoreContact from './screens/storeContactScreen';
-import ViewContacts from './screens/viewContactsScreen';
-import ForgotPassword from './screens/forgotPasswordScreen';
-import Update from './screens/updateScreen';
+import StoreContact from './screens/storeContactScreen'
+import ViewContacts from './screens/viewContactsScreen'
+import ForgotPassword from './screens/forgotPasswordScreen'
+import Update from './screens/updateScreen'
+import ViewMap from './screens/mapScreen'
 import { theme } from './core/theme';
 
 const Stack = createStackNavigator();
@@ -104,7 +105,14 @@ export default function App() {
               headerTitle: ''
             }}
           />  
-      </Stack.Navigator>      
+          <Stack.Screen
+            name="ViewMap"
+            component={ViewMap}
+            options= {{
+              headerTitle: ''
+            }}
+          />
+      </Stack.Navigator>    
     </NavigationContainer>
   );
 }

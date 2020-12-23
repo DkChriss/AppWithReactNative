@@ -150,54 +150,79 @@ const storeContactScreen = (props) =>{
         <Background> 
             <ScrollView  style={styles.scrollView}>
         <View style={styles.container}>
-        <Image source={require('../images/user.jpg')} style={styles.image} />    
+            <Image source={require('../images/user.jpg')} style={styles.image} />    
             <TextInput
-            label="Nombre"
-            returnKeyType="next"
-            value={name.value}
-            onChangeText={(text) => setName({value: text, error: ''})}
-            error={!!name.error}
-            errorText={name.error}
-
+                label="Nombre"
+                returnKeyType="next"
+                value={name.value}
+                onChangeText={
+                    (text) => setName(
+                        {
+                            value: text, 
+                            error: ''
+                        }
+                    )}
+                error={!!name.error}
+                errorText={name.error}
+                autoCapitalize="words"
+                autoCompleteType="name"
             />
             <TextInput
-            label="Apellido"
-            returnKeyType="next"
-            value={lastname.value}
-            onChangeText={
-                (text) => setLastName(
+                label="Apellido"
+                returnKeyType="next"
+                value={lastname.value}
+                onChangeText={
+                    (text) => setLastName(
+                        {
+                            value: text, 
+                            error: ''
+                        }
+                    )
+                }
+                error={!!lastname.error}
+                errorText={lastname.error}
+                autoCapitalize="words"
+            />
+            <TextInput 
+                label="Apodo"
+                returnKeyType="next"
+                value={alias.value}
+                onChangeText={(text) => setAlias(
                     {
                         value: text, 
                         error: ''
                     }
-                )
-            }
-            error={!!lastname.error}
-            errorText={lastname.error}
-            />
-            <TextInput 
-            label="Apodo"
-            returnKeyType="next"
-            value={alias.value}
-            onChangeText={(text) => setAlias({value: text, error: ''})}
-            error={!!alias.error}
-            errorText={alias.error}
-
+                )}
+                error={!!alias.error}
+                errorText={alias.error}
+                autoCapitalize="none"
+                autoCompleteType="username"
             />
             <TextInput
                 label="Numero de Celular"
                 value={number.value}
-                onChangeText={(number) => setNumber({value: number, error: ''})}
+                onChangeText={(number) => setNumber(
+                    {
+                        value: number, 
+                        error: ''
+                    }
+                )}
                 error={!!number.error}
                 errorText={number.error}
-                autoCapitalize="none"
-                keyboardType="numeric"
+                autoCompleteType="number"
+                textContentType="telephoneNumber"
+                keyboardType="number-pad"
             />
             <TextInput
                 label="Correo electronico"
                 returnKeyType="next"
                 value={email.value}
-                onChangeText={(text) => setEmail({value: text, error: ''})}
+                onChangeText={(text) => setEmail(
+                    {
+                        value: text, 
+                        error: ''
+                    }
+                )}
                 error={!!email.error}
                 errorText={email.error}
                 autoCapitalize="none"
@@ -205,10 +230,17 @@ const storeContactScreen = (props) =>{
                 textContentType="emailAddress"
                 keyboardType="email-address"
             />
+            <Checkbox
+                status={checked ? 'checked' : 'unchecked'}
+                onPress={() => {
+                    alert('EMERGENCIA');
+                }}
+            />
             <Button
-            mode="contained"
-            onPress={ validateFields }>
-            Guardar Contacto
+                mode="contained"
+                onPress={ validateFields }
+            >
+                Guardar Contacto
             </Button>
         </View>
         </ScrollView>
