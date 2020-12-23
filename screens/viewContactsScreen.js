@@ -47,38 +47,26 @@ const viewContactsScreen = ({navigation}) => {
     await dbRef.delete();
   }
 
-
-
- 
     const [state, setState] = React.useState({ open: false });
-  
     const onStateChange = ({ open }) => setState({ open });
-  
     const { open } = state;
   
   return (
-    <BackgroundBack> 
-    
+  <BackgroundBack> 
     <View style={styles.container}>
-      
-
-
-        <View >
+      <View >
         <View style={styles.logotipo}>
-        <Logo/>
-        <Header>
-          Contactos
-        </Header>
+          <Logo/>
+            <Header>
+            Contactos
+            </Header>
         </View>
-        
-        <Button 
-          mode="contained"
-          onPress={() => navigation.navigate('Update')}>
+          <Button 
+            mode="contained"
+            onPress={() => navigation.navigate('Update')}>
             Actualizar Datos
-        </Button>
-    
+          </Button>
       {
-    
         contacts.map(contact => {
           return (
             <Card key={contact.id}>
@@ -104,32 +92,25 @@ const viewContactsScreen = ({navigation}) => {
           )
         })
       }
-      
-  </View>
+      </View>
     </View>
-
-    <Provider>
-      <Portal>
-        <FAB.Group
-          open={open}
-          icon={open ? 'calendar-today' : 'plus'}
-          actions={[
+      <Provider>
+        <Portal>
+          <FAB.Group
+            open={open}
+            icon={open ? 'calendar-today' : 'plus'}
+            actions={[
             {
               icon: 'plus',
               label: 'Agregar Contacto',
               onPress: () =>  {navigation.navigate('StoreContact')}
             },
           ]}
-          onStateChange={onStateChange}
-          onPress={() => {
-            if (open) {
-            }
-          }}
+            onStateChange={onStateChange}
         />
-      </Portal>
-    </Provider>   
-   
-    </BackgroundBack>
+        </Portal>
+      </Provider>   
+  </BackgroundBack>
   
   );
 }

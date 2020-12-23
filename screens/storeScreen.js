@@ -92,14 +92,16 @@ const storeScreen = ({ navigation }) => {
       setEqualPassword({ ...equalPassword, error:equalPasswordError })
       return;
     }
+    
 
     storeNewUser();
   }
 
 
   return (
-    <ScrollView  style={styles.scrollView}> 
+    
     <Background>
+      <ScrollView  style={styles.scrollView}> 
         <Logo></Logo>
         <Header>
           Crear una cuenta
@@ -199,8 +201,9 @@ const storeScreen = ({ navigation }) => {
             <Text style={styles.link}>Iniciar Sesion</Text>
           </TouchableOpacity>
         </View>
+        </ScrollView>
     </Background>
-    </ScrollView>
+    
   );
 }
 const styles = StyleSheet.create({

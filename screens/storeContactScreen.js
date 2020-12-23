@@ -146,8 +146,9 @@ const storeContactScreen = (props) =>{
         
     return(
 
-        <ScrollView  style={styles.scrollView}>
+        
         <Background> 
+            <ScrollView  style={styles.scrollView}>
         <View style={styles.container}>
         <Image source={require('../images/user.jpg')} style={styles.image} />    
             <TextInput
@@ -173,7 +174,6 @@ const storeContactScreen = (props) =>{
             }
             error={!!lastname.error}
             errorText={lastname.error}
- 
             />
             <TextInput 
             label="Apodo"
@@ -211,9 +211,8 @@ const storeContactScreen = (props) =>{
             Guardar Contacto
             </Button>
         </View>
-        </Background>
-
         </ScrollView>
+        </Background>
     );
 }
 
@@ -238,5 +237,5 @@ const styles= StyleSheet.create({
     },    
     scrollView: {
         marginHorizontal: 0,
-      },  
+    },  
 });
