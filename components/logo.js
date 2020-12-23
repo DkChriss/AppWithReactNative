@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Logo
+export default Logo;

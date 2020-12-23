@@ -60,7 +60,7 @@ const loginScreen = ({ navigation }) => {
   }
 
   return (
-    <Background>
+    <Background >
       <Logo></Logo>
       <Header>
         Bienvenido

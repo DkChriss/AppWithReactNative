@@ -16,18 +16,19 @@ import Header from '../components/header'
 import Button from '../components/button'
 import Logo from '../components/logo'
 import Background from '../components/background'
+import FabButton from '../components/FabButton'
+import BackgroundBack from '../components/backgroundBack'
 
 const viewContactsScreen = ({navigation}) => {
 
   const [contacts, setContacts] = useState([])
 
   useEffect(() => {
-      
+
     let user = firebase.firebase.auth().currentUser;
     firebase.db.collection(user.email).onSnapshot(querySnapshot => {
       let contacts = [];
-
-      querySnapshot.docs.forEach(value => {
+        querySnapshot.docs.forEach(value => {
         const {name,lastname,alias} = value.data();
         contacts.push({
           id: value.id,
@@ -48,48 +49,62 @@ const viewContactsScreen = ({navigation}) => {
   }
   
   return (
-    <View>
-        <Logo></Logo>
+    <BackgroundBack> 
+    
+        <View style={styles.container}>
+      
+      <FabButton
+          route='StoreContact'
+        style={{bottom: 80, right: 60, zIndex:1}} />
+
+
+        <View >
+        <View style={styles.logotipo}>
+        <Logo/>
         <Header>
-            Contactos
+          Contactos
         </Header>
+        </View>
+        
         <Button 
           mode="contained"
           onPress={() => navigation.navigate('Update')}>
             Actualizar Datos
         </Button>
-        {
-          contacts.map(contact => {
-            return (
-              <Card key={contact.id}>
-                <Card.Title
-                  title={contact.alias}
-                  subtitle={contact.name+" "+contact.lastname}
-                  left={(props) => <Avatar.Icon {...props} icon="folder" />}
-                  right={
-                    (props) => 
-                    <Card.Actions>
-                      <IconButton {...props} icon="pencil" onPress={() => {
-                        navigation.navigate('StoreContact', {
-                          userId: contact.id
-                        })
-                      }} />
-                      <IconButton {...props} icon="pencil" color={Colors.red800} onPress={() => {
-                        destroy(contact.id)
-                      }} />
-                    </Card.Actions>
-                  }
-                />
-              </Card>
-            )
-          })
-        }
-        <Button 
-          mode="contained"
-          onPress={() => navigation.navigate('StoreContact')}>
-            Registrar Nuevo Contacto
-        </Button>
+    
+      {
+    
+        contacts.map(contact => {
+          return (
+            <Card key={contact.id}>
+              <Card.Title
+                title={contact.alias}
+                subtitle={contact.name+" "+contact.lastname}
+                left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                right={
+                  (props) => 
+                  <Card.Actions>
+                    <IconButton {...props} icon="pencil" onPress={() => {
+                      navigation.navigate('StoreContact', {
+                      userId: contact.id
+                      })
+                    }} />
+                    <IconButton {...props} icon="delete" 
+                    color={Colors.red800}
+                    onPress={() => {destroy(contact.id)}} />
+                  </Card.Actions>
+                }
+              />
+            </Card>
+          )
+        })
+      }
+      
+  </View>
     </View>
+  
+    </BackgroundBack>
+  
   );
 }
 
@@ -108,13 +123,19 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 22
+    paddingTop: 22,
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
-  }
+  },
+  logotipo: {
+    
+    alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+  },
 });
 
 export default viewContactsScreen;
