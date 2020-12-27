@@ -197,7 +197,6 @@ const storeScreen = (props) => {
     };
 
     const openImagePickerAsync = async () => {
-        sizePicture.value = 200;
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
         if (permissionResult.granted === false) {
@@ -207,15 +206,15 @@ const storeScreen = (props) => {
 
         let pickerResult = await ImagePicker.launchImageLibraryAsync();
         if (pickerResult.cancelled === true) {
-            sizePicture.value = 150;
             return;
         }
+
+        sizePicture.value = 200;
         setSelectedImage({ localUri: pickerResult.uri });
         refRBSheet.current.close();
     }
     
     const openCamareAsync = async () => {
-        sizePicture.value = 200;
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
         if (permissionResult.granted === false) {
@@ -225,9 +224,10 @@ const storeScreen = (props) => {
 
         let pickerResult = await ImagePicker.launchCameraAsync();
         if (pickerResult.cancelled === true) {
-            sizePicture.value = 150;
             return;
-          }
+        }
+
+        sizePicture.value = 200;
         setSelectedImage({ localUri: pickerResult.uri });
         refRBSheet.current.close();
     }
@@ -241,7 +241,6 @@ const storeScreen = (props) => {
 
     const eliminarFoto = ()  => { 
         if(selectedImage.localUri != defaultImageUri && selectedImage.localUri != undefined){   
-            console.log("llego");
             sizePicture.value = 200;
             return(
                 <ListItem onPress={deletePicture}>
@@ -251,10 +250,7 @@ const storeScreen = (props) => {
                 </ListItem>
             )
         }
-        else {
-            sizePicture.value = 150;
-            return;
-        }
+        return;
     }
 
     return (
