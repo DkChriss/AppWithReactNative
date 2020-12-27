@@ -3,9 +3,9 @@ import React, { Component, useState, useEffect, useRef  } from 'react';
 import { 
   View,
   StyleSheet, 
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
-
 import { ActivityIndicator, Colors } from 'react-native-paper';
 
 //Importaciones Locales
@@ -42,28 +42,54 @@ const storeScreen = (props) => {
 
     const refRBSheet = useRef();
 
-    const [sizePicture, setSizePicture] = useState({value: 150})
+    const [sizePicture] = useState({value: 150})
+    const defaultImage = require('../images/add-person.png');
+    const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
+    const user = firebase.firebase.auth().currentUser;
 
     const updateUser= async () => {
+        try {
+            let dbRef = firebase.db.collection('users').doc(user.uid);
+    
+            await dbRef.set({
+                name: name.value,
+                lastname: lastname.value,
+                nickname: nickname.value
+            })
+            
+            if (password.length > 0) {
+                user.updatePassword(newPassword).then(function() {
+                }).catch(function(error) {
+                    console.log(error)
+                });
+            }
+                
+            const imageUri = selectedImage.localUri;
+            let namePicture = user.uid;
+            if(imageUri != defaultImageUri) {
+                uploadImage(imageUri)
+                    .then(resolve => {
+                        let ref = firebase.firebase
+                            .storage()
+                            .ref()
+                            .child(`images/${namePicture}`);
 
-        let user = firebase.firebase.auth().currentUser
-        let dbRef = firebase.db.collection('users').doc(user.uid);
+                        ref.put(resolve).then(resolve =>{
+                            console.log('imagen subida');
+                        }).catch(error =>{
+                            console.log(error);
+                        });
 
+                    })
+                    .catch(error =>{
+                        console.log(error);
+                    });
+            }
 
-        await dbRef.set({
-            name: name.value,
-            lastname: lastname.value,
-            nickname: nickname.value
-        })
-        
-        if (password.length > 0) {
-            user.updatePassword(newPassword).then(function() {
-            }).catch(function(error) {
-                console.log(error)
-            });
+            props.navigation.navigate('ViewContacts')
+        } catch (e) {
+            console.log(e);
         }
-
-        props.navigation.navigate('ViewContacts')
     } 
 
     const onUpdatePressed = () => {
@@ -94,10 +120,10 @@ const storeScreen = (props) => {
     }
 
     const getData = async () => {
-        let user = firebase.firebase.auth().currentUser;
         let dbRef = firebase.db.collection('users').doc(user.uid);
         let doc = await dbRef.get();
         let userData = doc.data();
+        urlImage();
 
         setName({
             value: userData.name,
@@ -118,9 +144,34 @@ const storeScreen = (props) => {
         setLoading(false)
     }
 
+    function urlImage () {
+        let url = "";
+        firebase.firebase
+            .storage()
+            .ref(`images/${user.uid}`)
+            .getDownloadURL()
+            .then(resolve =>{
+                url = resolve;
+                setSelectedImage({ localUri: url})
+            })
+            .catch(error =>{
+                setSelectedImage({ localUri: defaultImageUri})
+            })
+    }
+
+    function deleteImageFirebase() {
+        firebase.firebase
+            .storage()
+            .ref(`images/${user.uid}`)
+            .delete() 
+            .then(function() {
+                console.log("eliminado")
+            })
+            .catch(function(error) {})
+    }
+    
     useEffect(() => {
         getData();
-        setSelectedImage({ localUri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'});
     }, [])
 
     if(loading) {
@@ -128,6 +179,22 @@ const storeScreen = (props) => {
             <ActivityIndicator animating={true} color={Colors.red800} />
         )
     }
+
+    const uploadImage = (uri) => {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.onerror = reject;
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState === 4){
+                    resolve(xhr.response);
+                }
+            };
+
+            xhr.open("GET", uri);
+            xhr.responseType = "blob";
+            xhr.send();
+        });
+    };
 
     const openImagePickerAsync = async () => {
         sizePicture.value = 200;
@@ -147,7 +214,6 @@ const storeScreen = (props) => {
         refRBSheet.current.close();
     }
     
-
     const openCamareAsync = async () => {
         sizePicture.value = 200;
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -167,14 +233,16 @@ const storeScreen = (props) => {
     }
 
     const deletePicture = () => {
-        setSelectedImage({ localUri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'});
+        setSelectedImage({ localUri: defaultImageUri});
+        deleteImageFirebase();
         sizePicture.value = 150;
         refRBSheet.current.close();
     }
 
-    const eliminarFoto = () => {
-        if(selectedImage.localUri != 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'){
-            sizePicture.value = 200;    
+    const eliminarFoto = ()  => { 
+        if(selectedImage.localUri != defaultImageUri && selectedImage.localUri != undefined){   
+            console.log("llego");
+            sizePicture.value = 200;
             return(
                 <ListItem onPress={deletePicture}>
                     <ListItem.Content>
@@ -194,7 +262,6 @@ const storeScreen = (props) => {
         <Background>
             <ScrollView>
                 <Avatar
-                    title="BR"
                     size="large"
                     onPress={() => refRBSheet.current.open()}
                     rounded
@@ -207,7 +274,11 @@ const storeScreen = (props) => {
                         marginLeft: 0,
                         alignSelf: 'center',
                         justifyContent: 'center'}}>
-                  <Avatar.Accessory {...openCamareAsync} />
+                     <Avatar.Accessory  
+                            {...styles.Accessory}
+                            size={20}
+                            onPress={() => refRBSheet.current.open()}
+                        />
                 </Avatar>
                 <Header>
                 Actualizar Datos De Cuenta
@@ -318,7 +389,6 @@ const storeScreen = (props) => {
                         }
                     }}>
                     <View>
-                        {eliminarFoto()}
                         <ListItem onPress={openCamareAsync}>
                             <Icon 
                                 name='camera'
@@ -337,6 +407,7 @@ const storeScreen = (props) => {
                                 <ListItem.Title>Seleccionar una Foto</ListItem.Title>
                             </ListItem.Content>
                         </ListItem>
+                        {eliminarFoto()}
                     </View>
             </RBSheet>
         </Background>
@@ -356,5 +427,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
+  Accessory: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 50,
+    borderColor: theme.colors.primary,
+  }
 });
 export default storeScreen;
