@@ -266,8 +266,6 @@ const storeScreen = (props) => {
                     }}
                     containerStyle={{
                         backgroundColor: 'grey',
-                        flex: 2, 
-                        marginLeft: 0,
                         alignSelf: 'center',
                         justifyContent: 'center'}}>
                      <Avatar.Accessory  

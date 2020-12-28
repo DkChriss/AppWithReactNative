@@ -1,28 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component, useRef, useState, useEffect } from 'react';
 import { 
   StyleSheet,
-  View
+  View, 
+  Image,
+  TouchableOpacity,
+  Text
 } from 'react-native';
-import { FAB, Portal, Provider } from 'react-native-paper'
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
+
+import { FAB, Portal, Provider } from 'react-native-paper';
+import { Card, Avatar, IconButton, Colors, ActivityIndicator } from 'react-native-paper';
+import {Avatar as AvatarElement} from 'react-native-elements'; 
 
 //DB
 import firebase from '../database/firebase'
+
 //Componentes
 import { theme } from '../core/theme'
-import Header from '../components/header'
-import Button from '../components/button'
-import Logo from '../components/logo'
-import Background from '../components/background'
 import BackgroundBack from '../components/backgroundBack'
+import Header from '../components/header'
 
-
+const defaultImage = require('../images/add-person.png');
+const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
 export default class viewContactsScreen extends Component{
 
   state = {
-    contacts: []
+    contacts: [],
+    name: '',
+    lastname: '',
+    selectedImage: defaultImageUri
   }
   _isMounted = false;
 
@@ -49,6 +54,27 @@ export default class viewContactsScreen extends Component{
     this._isMounted = false;
   }
 
+  urlImage () {
+    let url = "";
+    firebase.firebase
+        .storage()
+        .ref(`images/${user.uid}`)
+        .getDownloadURL()
+        .then(resolve =>{
+            url = resolve;
+            this.setState({
+              ...this.state,
+              selectedImage: url
+            })
+        })
+        .catch(error =>{
+            this.setState({
+              ...this.state,
+              selectedImage: defaultImageUri
+            })
+        })
+  }
+
   destroyContact = async (id) => {
     let user = firebase.firebase.auth().currentUser;
     let dbRef = firebase.db.collection(user.email).doc(id)
@@ -59,11 +85,26 @@ export default class viewContactsScreen extends Component{
     return (
       <BackgroundBack> 
         <View style={styles.container}>
-              <Button 
-                mode="contained"
-                onPress={() => this.props.navigation.navigate('Update')}>
-                Actualizar Datos
-              </Button>
+              <View>
+                <AvatarElement
+                      size="large"
+                      rounded
+                      source={{
+                          uri: this.state.selectedImage    
+                      }}
+                      containerStyle={{
+                          backgroundColor: 'grey'}}/> 
+              </View>
+              <View style={{
+                  marginTop: -65,
+                  paddingLeft: 100,
+                  alignSelf: 'flex-start',}}
+                  >
+                    <Text style={styles.title}>{this.state.name + " " + this.state.lastname}</Text>
+                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('Update')}>
+                      <Text style={styles.link}>Editar perfil</Text>
+                    </TouchableOpacity>
+              </View> 
           {
             this.state.contacts.map(contact => {
               return (
@@ -122,5 +163,20 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  logotipo: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#8340F7',
+  },
+  title :{
+    fontSize: 25,
   }
 });
