@@ -61,7 +61,7 @@ export default class viewContactsScreen extends Component{
         <View style={styles.container}>
               <Button 
                 mode="contained"
-                onPress={() => navigation.navigate('Update')}>
+                onPress={() => this.props.navigation.navigate('Update')}>
                 Actualizar Datos
               </Button>
           {
