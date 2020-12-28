@@ -61,7 +61,8 @@ export default class Map extends Component {
         this.setState({
             ...this.state,
             destination: {
-                name: contact.name,
+                name: contact.name + ' ' +contact.lastname,
+                description: contact.alias,
                 location: contact.location
             }
         })
@@ -86,6 +87,7 @@ export default class Map extends Component {
     render() {
         const origin = this.state.origin
         const name = this.state.destination.name
+        const description = this.state.destination.description
         const destination = this.state.destination.location
         if (destination.latitude === 0 || destination.longitude === 0) {
             return (
@@ -102,6 +104,7 @@ export default class Map extends Component {
                     <Marker
                         coordinate={destination}
                         title={name}
+                        description={description}
                     /> 
                     <MapViewDirections
                         origin={origin}

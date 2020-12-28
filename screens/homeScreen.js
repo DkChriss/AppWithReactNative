@@ -23,9 +23,6 @@ const HomeScreen = ({ navigation }) => {
             <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
                 Registrarse
             </Button>
-            <Button mode="outlined" onPress={() => navigation.navigate('ViewMap')}>
-                Mapa
-            </Button>
         </Background>
     )
 }
