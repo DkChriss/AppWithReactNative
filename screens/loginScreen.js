@@ -69,7 +69,7 @@ const loginScreen = ({ navigation }) => {
       </Header>
       <TextInput
         label="Correo electronico"
-        returnKeyType="next"
+        returnKeyType="done"
         value={email.value}
         onChangeText={(text) => setEmail({value: text, error: ''})}
         error={!!email.error}
