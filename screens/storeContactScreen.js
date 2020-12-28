@@ -14,7 +14,7 @@ import Background from '../components/background';
 import { theme } from '../core/theme'
 
 //Paquetes
-import { ActivityIndicator, Colors } from 'react-native-paper';
+import { ActivityIndicator, Colors, Switch} from 'react-native-paper';
 import { Avatar, ListItem, Icon } from "react-native-elements"
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location'
@@ -259,15 +259,24 @@ const storeContactScreen = (props) =>{
                     </Avatar>   
                     <TextInput
                         label="Nombre"
-                        returnKeyType="next"
+                        returnKeyType="done"
                         value={name.value}
-                        onChangeText={(text) => setName({value: text, error: ''})}
+                        onChangeText={
+                            (text) => setName(
+                                {
+                                    value: text, 
+                                    error: ''
+                                }
+                            )}
                         error={!!name.error}
-                        errorText={name.error}/>
+                        errorText={name.error}
+                        autoCapitalize="words"
+                        autoCompleteType="name"
+                    />
                     
                     <TextInput
                         label="Apellido"
-                        returnKeyType="next"
+                        returnKeyType="done"
                         value={lastname.value}
                         onChangeText={
                             (text) => setLastName(
@@ -278,37 +287,66 @@ const storeContactScreen = (props) =>{
                             )
                         }
                         error={!!lastname.error}
-                        errorText={lastname.error}/>
-
+                        errorText={lastname.error}
+                        autoCapitalize="words"
+                    />
                     <TextInput 
                         label="Apodo"
-                        returnKeyType="next"
+                        returnKeyType="done"
                         value={alias.value}
-                        onChangeText={(text) => setAlias({value: text, error: ''})}
+                        onChangeText={(text) => setAlias(
+                            {
+                                value: text, 
+                                error: ''
+                            }
+                        )}
                         error={!!alias.error}
-                        errorText={alias.error} />
+                        errorText={alias.error}
+                    />
 
                     <TextInput
                         label="Numero de Celular"
+                        returnKeyType="done"
                         value={number.value}
-                        onChangeText={(number) => setNumber({value: number, error: ''})}
+                        onChangeText={(number) => setNumber(
+                            {
+                                value: number, 
+                                error: ''
+                            }
+                        )}
                         error={!!number.error}
                         errorText={number.error}
-                        autoCapitalize="none"
-                        keyboardType="numeric"/>
+                        autoCompleteType="tel"
+                        textContentType="telephoneNumber"
+                        keyboardType="number-pad"
+                    />
 
                     <TextInput
                         label="Correo electronico"
-                        returnKeyType="next"
+                        returnKeyType="done"
                         value={email.value}
-                        onChangeText={(text) => setEmail({value: text, error: ''})}
+                        onChangeText={(text) => setEmail(
+                            {
+                                value: text, 
+                                error: ''
+                            }
+                        )}
                         error={!!email.error}
                         errorText={email.error}
-                        autoCapitalize="none"
                         autoCompleteType="email"
                         textContentType="emailAddress"
-                        keyboardType="email-address"/>
+                        keyboardType="email-address"
+                    />
 
+                    <Text>
+                        {enableSwitch.text}
+                    </Text>
+                    <Switch
+                        value={isSwitchOn} 
+                        onValueChange={onToggleSwitch} 
+                        tintColor='#DEDEDE'
+                        disabled={enableSwitch.disabled}
+                    />
                     <Button
                         mode="contained"
                         onPress={ validateFields }>

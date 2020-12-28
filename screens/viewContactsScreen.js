@@ -7,9 +7,8 @@ import {
   Text
 } from 'react-native';
 
-import { FAB, Portal, Provider } from 'react-native-paper';
 import { Card, Avatar, IconButton, Colors, ActivityIndicator } from 'react-native-paper';
-import {Avatar as AvatarElement} from 'react-native-elements'; 
+import {Avatar as AvatarElement, Icon} from 'react-native-elements'; 
 
 //DB
 import firebase from '../database/firebase'
@@ -21,6 +20,7 @@ import Header from '../components/header'
 
 const defaultImage = require('../images/add-person.png');
 const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
+const refRBSheet = useRef();
 export default class viewContactsScreen extends Component{
 
   state = {
@@ -125,11 +125,15 @@ export default class viewContactsScreen extends Component{
                         <IconButton {...props} icon="delete" 
                         color={Colors.red800}
                         onPress={() => {this.destroyContact(contact.id)}} />
-                        <IconButton {...props} icon="pencil" onPress={() => {
-                          this.props.navigation.navigate('MapContact', {
-                          userId: contact.id
-                          })
-                        }} />
+                        <Icon {...props}
+                            name='location'
+                            type='ionicon'
+                            onPress={() => {
+                              navigation.navigate('MapContact', {
+                              userId: contact.id
+                              })
+                            }} 
+                          />
                       </Card.Actions>
                     }
                   />
@@ -164,18 +168,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
-  },
-  logotipo: {
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#8340F7',
   },
   title :{
     fontSize: 25,

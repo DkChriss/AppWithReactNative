@@ -271,7 +271,6 @@ const storeScreen = ({ navigation }) => {
                 />
                 <TextInput
                   label="Correo electronico"
-                  returnKeyType="next"
                   value={email.value}
                   onChangeText={
                     (text) => setEmail({
@@ -281,7 +280,6 @@ const storeScreen = ({ navigation }) => {
                   }
                   error={!!email.error}
                   errorText={email.error}
-                  autoCapitalize="none"
                   autoCompleteType="email"
                   textContentType="emailAddress"
                   keyboardType="email-address"
