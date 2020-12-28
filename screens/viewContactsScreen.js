@@ -78,6 +78,7 @@ export default class viewContactsScreen extends Component{
   destroyContact = async (id) => {
     let user = firebase.firebase.auth().currentUser;
     let dbRef = firebase.db.collection(user.email).doc(id)
+    deleteImageFirebase(id);
     await dbRef.delete();
   }
 
