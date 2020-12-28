@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import { FAB, Portal, Provider } from 'react-native-paper';
+import { FAB, Portal, Provider } from 'react-native-paper'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
@@ -47,20 +47,33 @@ const viewContactsScreen = ({navigation}) => {
     await dbRef.delete();
   }
 
-    const [state, setState] = React.useState({ open: false });
-    const onStateChange = ({ open }) => setState({ open });
-    const { open } = state;
-  
+  const getMap = async(id) => {
+    let user = firebase.firebase.auth().currentUser;
+    let contact = firebase.db.collection(user.email).doc(id);
+    
+    contact.get().then((doc) => {
+      if(doc.exists) {
+        let data = doc.data()
+          if( 
+            data.location && 
+            data.location.latitude && 
+            data.location.longitude ) {
+              alert('No existe ubicación')
+              return
+            }
+
+          
+      } else {
+        console.log("Vacio")
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
   return (
   <BackgroundBack> 
     <View style={styles.container}>
-      <View >
-        <View style={styles.logotipo}>
-          <Logo/>
-            <Header>
-            Contactos
-            </Header>
-        </View>
           <Button 
             mode="contained"
             onPress={() => navigation.navigate('Update')}>
@@ -85,6 +98,11 @@ const viewContactsScreen = ({navigation}) => {
                     <IconButton {...props} icon="delete" 
                     color={Colors.red800}
                     onPress={() => {destroy(contact.id)}} />
+                    <IconButton {...props} icon="pencil" onPress={() => {
+                      navigation.navigate('MapContact', {
+                      userId: contact.id
+                      })
+                    }} />
                   </Card.Actions>
                 }
               />
@@ -92,24 +110,7 @@ const viewContactsScreen = ({navigation}) => {
           )
         })
       }
-      </View>
-    </View>
-      <Provider>
-        <Portal>
-          <FAB.Group
-            open={open}
-            icon={open ? 'calendar-today' : 'plus'}
-            actions={[
-            {
-              icon: 'plus',
-              label: 'Agregar Contacto',
-              onPress: () =>  {navigation.navigate('StoreContact')}
-            },
-          ]}
-            onStateChange={onStateChange}
-        />
-        </Portal>
-      </Provider>   
+    </View> 
   </BackgroundBack>
   
   );
@@ -136,20 +137,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
-  },
-  logotipo: {
-    
-    alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#8340F7',
-  },
+  }
 });
 
 export default viewContactsScreen;

@@ -12,13 +12,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 //Importaciones locales
-import Login from './screens/loginScreen';
-import Home  from './screens/homeScreen';
+import Login from './screens/loginScreen'
+import Home  from './screens/homeScreen'
 import Register from './screens/storeScreen'
-import StoreContact from './screens/storeContactScreen';
-import ViewContacts from './screens/viewContactsScreen';
-import ForgotPassword from './screens/forgotPasswordScreen';
-import Update from './screens/updateScreen';
+import StoreContact from './screens/storeContactScreen'
+import ViewContacts from './screens/viewContactsScreen'
+import MapContact from './screens/mapContact'
+import ForgotPassword from './screens/forgotPasswordScreen'
+import Update from './screens/updateScreen'
+
+//STYLES
 import { theme } from './core/theme';
 
 const Stack = createStackNavigator();
@@ -27,7 +30,28 @@ const HeaderNav = ({ scene, previous, navigation }) => {
   
   let options = scene.descriptor.options;
   let title = options.headerTitle !== undefined ? options.headerTitle : "";
-  
+  let hasAction = options.hasAction;
+
+  if (hasAction) {
+    let action_1 = options.action_1
+    return (
+      <Appbar.Header>
+        <Appbar.BackAction
+          onPress={() => {
+            options.logOut && options.logOut !== undefined
+            ? firebase.firebase.auth()
+              .signOut()
+              .then(() => navigation.navigate('Home')) 
+            : navigation.pop();
+          }}
+        />
+        <Appbar.Content title={title} subtitle={title} /> 
+        <Appbar.Action icon={action_1.icon}  onPress={() => {navigation.navigate(action_1.route)}}/>
+      </Appbar.Header>
+    );
+  }
+
+
   return (
     <Appbar.Header>
       <Appbar.BackAction
@@ -39,7 +63,7 @@ const HeaderNav = ({ scene, previous, navigation }) => {
           : navigation.pop();
         }}
       />
-      <Appbar.Content title={title} subtitle="" /> 
+      <Appbar.Content title={title} subtitle={title} /> 
     </Appbar.Header>
   );
 };
@@ -93,7 +117,12 @@ export default function App() {
             component={ViewContacts} 
             options={{
               headerTitle: '',
-              logOut: true
+              logOut: true,
+              hasAction: true,
+              action_1: {
+                icon: 'plus',
+                route: 'StoreContact'
+              }
             }}
           />
           <Stack.Screen 
@@ -104,7 +133,11 @@ export default function App() {
               headerTitle: ''
             }}
           />  
-      </Stack.Navigator>      
+          <Stack.Screen
+            name="MapContact"
+            component={MapContact}
+          />
+      </Stack.Navigator>    
     </NavigationContainer>
   );
 }

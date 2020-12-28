@@ -3,12 +3,14 @@ import {
     StyleSheet
 } from 'react-native';
 
+//Componentes
 import Background from '../components/background';
 import Button from '../components/button';
 import Logo from '../components/logo';
 import Header from '../components/header';
-import { theme } from '../core/theme'
 
+//Styles
+import { theme } from '../core/theme'
 
 const HomeScreen = ({ navigation }) => {
     return (
@@ -21,7 +23,6 @@ const HomeScreen = ({ navigation }) => {
             <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
                 Registrarse
             </Button>
-            
         </Background>
     )
 }

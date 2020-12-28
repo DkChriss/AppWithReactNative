@@ -3,6 +3,7 @@ import {
     Text,
 } from 'react-native';
 
+//Componentes
 import TextInput from '../components/TextInput'
 import Header from '../components/header'
 import Button from '../components/button'
