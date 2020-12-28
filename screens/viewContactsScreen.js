@@ -18,102 +18,87 @@ import Logo from '../components/logo'
 import Background from '../components/background'
 import BackgroundBack from '../components/backgroundBack'
 
-const viewContactsScreen = ({navigation}) => {
 
-  const [contacts, setContacts] = useState([])
+export default class viewContactsScreen extends Component{
 
-  useEffect(() => {
+  state = {
+    contacts: []
+  }
+  _isMounted = false;
 
-    let user = firebase.firebase.auth().currentUser;
-    firebase.db.collection(user.email).onSnapshot(querySnapshot => {
-      let contacts = [];
-        querySnapshot.docs.forEach(value => {
-        const {name,lastname,alias} = value.data();
-        contacts.push({
-          id: value.id,
-          name,
-          lastname,
-          alias
-        });
+  componentDidMount() {
+    if (!this._isMounted) {
+      let user = firebase.firebase.auth().currentUser;
+      firebase.db.collection(user.email).onSnapshot(querySnapshot => {
+        let contacts = [];
+          querySnapshot.docs.forEach(value => {
+          const {name,lastname,alias} = value.data();
+          contacts.push({
+            id: value.id,
+            name,
+            lastname,
+            alias
+          });
+        })
+        this.setState({contacts: contacts});
       })
-      setContacts(contacts);
-    })
+    }
+  }
+  
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-  }, [])
-
-  const destroy = async (id) => {
+  destroyContact = async (id) => {
     let user = firebase.firebase.auth().currentUser;
     let dbRef = firebase.db.collection(user.email).doc(id)
     await dbRef.delete();
   }
 
-  const getMap = async(id) => {
-    let user = firebase.firebase.auth().currentUser;
-    let contact = firebase.db.collection(user.email).doc(id);
-    
-    contact.get().then((doc) => {
-      if(doc.exists) {
-        let data = doc.data()
-          if( 
-            data.location && 
-            data.location.latitude && 
-            data.location.longitude ) {
-              alert('No existe ubicación')
-              return
-            }
-
-          
-      } else {
-        console.log("Vacio")
-      }
-    }).catch((error) => {
-      console.log(error);
-    })
+  render () {
+    return (
+      <BackgroundBack> 
+        <View style={styles.container}>
+              <Button 
+                mode="contained"
+                onPress={() => this.props.navigation.navigate('Update')}>
+                Actualizar Datos
+              </Button>
+          {
+            this.state.contacts.map(contact => {
+              return (
+                <Card key={contact.id}>
+                  <Card.Title
+                    title={contact.alias}
+                    subtitle={contact.name+" "+contact.lastname}
+                    left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                    right={
+                      (props) => 
+                      <Card.Actions>
+                        <IconButton {...props} icon="pencil" onPress={() => {
+                          this.props.navigation.navigate('UpdateContact', {
+                          userId: contact.id
+                          })
+                        }} />
+                        <IconButton {...props} icon="delete" 
+                        color={Colors.red800}
+                        onPress={() => {this.destroyContact(contact.id)}} />
+                        <IconButton {...props} icon="pencil" onPress={() => {
+                          this.props.navigation.navigate('MapContact', {
+                          userId: contact.id
+                          })
+                        }} />
+                      </Card.Actions>
+                    }
+                  />
+                </Card>
+              )
+            })
+          }
+        </View> 
+      </BackgroundBack>
+    )
   }
-
-  return (
-  <BackgroundBack> 
-    <View style={styles.container}>
-          <Button 
-            mode="contained"
-            onPress={() => navigation.navigate('Update')}>
-            Actualizar Datos
-          </Button>
-      {
-        contacts.map(contact => {
-          return (
-            <Card key={contact.id}>
-              <Card.Title
-                title={contact.alias}
-                subtitle={contact.name+" "+contact.lastname}
-                left={(props) => <Avatar.Icon {...props} icon="folder" />}
-                right={
-                  (props) => 
-                  <Card.Actions>
-                    <IconButton {...props} icon="pencil" onPress={() => {
-                      navigation.navigate('StoreContact', {
-                      userId: contact.id
-                      })
-                    }} />
-                    <IconButton {...props} icon="delete" 
-                    color={Colors.red800}
-                    onPress={() => {destroy(contact.id)}} />
-                    <IconButton {...props} icon="pencil" onPress={() => {
-                      navigation.navigate('MapContact', {
-                      userId: contact.id
-                      })
-                    }} />
-                  </Card.Actions>
-                }
-              />
-            </Card>
-          )
-        })
-      }
-    </View> 
-  </BackgroundBack>
-  
-  );
 }
 
 const styles = StyleSheet.create({
@@ -139,5 +124,3 @@ const styles = StyleSheet.create({
     height: 44,
   }
 });
-
-export default viewContactsScreen;

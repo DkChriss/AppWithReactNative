@@ -16,6 +16,7 @@ import Login from './screens/loginScreen'
 import Home  from './screens/homeScreen'
 import Register from './screens/storeScreen'
 import StoreContact from './screens/storeContactScreen'
+import UpdateContact from './screens/updateContactScreen'
 import ViewContacts from './screens/viewContactsScreen'
 import MapContact from './screens/mapContact'
 import ForgotPassword from './screens/forgotPasswordScreen'
@@ -132,6 +133,10 @@ export default function App() {
               back: true,
               headerTitle: ''
             }}
+          />
+          <Stack.Screen
+            name="UpdateContact"
+            component={UpdateContact}
           />  
           <Stack.Screen
             name="MapContact"
