@@ -47,7 +47,7 @@ export default class viewContactsScreen extends Component{
   }
   
   componentWillUnmount() {
-    this.isMounted = false;
+    this._isMounted = false;
   }
 
   destroyContact = async (id) => {
@@ -55,7 +55,7 @@ export default class viewContactsScreen extends Component{
     let dbRef = firebase.db.collection(user.email).doc(id)
     await dbRef.delete();
   }
-  
+
   render () {
     return (
       <BackgroundBack> 
