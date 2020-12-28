@@ -58,16 +58,24 @@ const storeContactScreen = (props) =>{
                     latitude: location.latitude,
                     longitude: location.longitude
                 }
+                firebase.db.collection(user.email).add({
+                    name: name.value,
+                    lastname: lastname.value,
+                    alias: alias.value,
+                    number: number.value,
+                    email: email.value,
+                    location: geoPoint
+                })
+            } else {
+                firebase.db.collection(user.email).add({
+                    name: name.value,
+                    lastname: lastname.value,
+                    alias: alias.value,
+                    number: number.value,
+                    email: email.value
+                })
             }
 
-            firebase.db.collection(user.email).add({
-                name: name.value,
-                lastname: lastname.value,
-                alias: alias.value,
-                number: number.value,
-                email: email.value,
-                location: geoPoint
-            });
             //REDIRECCIONAR
             props.navigation.navigate('ViewContacts')
         } catch (e) {
