@@ -27,8 +27,7 @@ export default class viewContactsScreen extends Component{
   _isMounted = false;
 
   componentDidMount() {
-    this._isMounted = true
-    if (this._isMounted) {
+    if (!this._isMounted) {
       let user = firebase.firebase.auth().currentUser;
       firebase.db.collection(user.email).onSnapshot(querySnapshot => {
         let contacts = [];
@@ -77,7 +76,7 @@ export default class viewContactsScreen extends Component{
                       (props) => 
                       <Card.Actions>
                         <IconButton {...props} icon="pencil" onPress={() => {
-                          this.props.navigation.navigate('StoreContact', {
+                          this.props.navigation.navigate('UpdateContact', {
                           userId: contact.id
                           })
                         }} />

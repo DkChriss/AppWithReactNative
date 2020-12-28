@@ -33,41 +33,49 @@ const storeContactScreen = (props) =>{
     const[email, setEmail] = useState({value: '', error: ''})
     const[location, setLocation] = useState({latitude: 0, longitude: 0})
     const[isSwitchOn, setIsSwitchOn] = useState(false)
-    
+
     const[enableSwitch, SetEnableSwitch] = useState({disabled: false , text: 'Guardar Ubicacion'})
 
     const onToggleSwitch = () => {
         setIsSwitchOn(!isSwitchOn)
     };
 
+
     //LOADING SCREEN
     const [loading, setLoading] = useState(true)
+    
+    const update = async () => {
 
-    const store = () => {
-        try {
-            let user = firebase.firebase.auth().currentUser;
-            let geoPoint = {};
+        let user = firebase.firebase.auth().currentUser
+        let contactId = props.route.params.userId
+        let dbRef = firebase.db.collection(user.email).doc(contactId);
 
-            if(isSwitchOn) {
-                geoPoint = {
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                }
+        let geoPoint = {};
+
+        if(isSwitchOn) {
+            geoPoint = {
+                latitude: location.latitude,
+                longitude: location.longitude
             }
-            firebase.db.collection(user.email).add({
+            await dbRef.update({
                 name: name.value,
                 lastname: lastname.value,
                 alias: alias.value,
                 number: number.value,
                 email: email.value,
-                location: geoPoint
-            });
-
-            //REDIRECCIONAR
-            props.navigation.navigate('ViewContacts')
-        } catch (e) {
-            console.log(e);
+                location: geoPoint 
+            })
+        } else {
+            await dbRef.update({
+                name: name.value,
+                lastname: lastname.value,
+                alias: alias.value,
+                number: number.value,
+                email: email.value
+            })
         }
+
+        props.navigation.navigate('ViewContacts')
     }
 
     const  validateFields = () => {
@@ -91,11 +99,50 @@ const storeContactScreen = (props) =>{
             return
         }
 
-        store()
+        update();
 
     }
 
+    const getContact = async (id) => {
+        let user = firebase.firebase.auth().currentUser;
+        let dbRef = firebase.db.collection(user.email).doc(id);
+        let doc = await dbRef.get();
+        let contact = doc.data();
+    
+        setName({
+            value: contact.name,
+            error: ''
+        })
+        setLastName({
+            value: contact.lastname,
+            error: ''
+        })
+        setAlias({
+            value: contact.alias,
+            error: ''
+        })
+        setNumber({
+            value: contact.number,
+            error: ''
+        })
+        setEmail({
+            value: contact.email,
+            error: ''
+        })
+
+        let locationCurrent = await Location.getCurrentPositionAsync({});
+        setLocation({
+            latitude: locationCurrent.coords.latitude,
+            longitude: locationCurrent.coords.longitude
+        })
+        setLoading(false)
+    }
     useEffect(() => {
+        if (
+            props && props.route && 
+            props.route.params && props.route.params.userId ) {
+            getContact(props.route.params.userId)
+        } 
         (
             async () => {
                 const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -111,7 +158,6 @@ const storeContactScreen = (props) =>{
                 })
             }
         )()
-        setLoading(false)
     }, [])
 
     if(loading) {
