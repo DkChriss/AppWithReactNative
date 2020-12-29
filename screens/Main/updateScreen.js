@@ -388,6 +388,10 @@ const storeScreen = (props) => {
                             </ListItem.Content>
                         </ListItem>
                         <ListItem onPress={deletePicture}>
+                            <Icon 
+                                name='trash'
+                                type='ionicon'
+                            />
                             <ListItem.Content>
                                 <ListItem.Title>Eliminar Foto</ListItem.Title>
                             </ListItem.Content>
