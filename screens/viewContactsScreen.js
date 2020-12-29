@@ -15,55 +15,55 @@ import firebase from '../database/firebase'
 import { theme } from '../core/theme'
 import Button from '../components/button'
 import BackgroundBack from '../components/backgroundBack'
-const defaultImage = require('../images/add-person.png');
-const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
+const defaultImage = require('../images/add-person.png')
+const defaultImageUri = Image.resolveAssetSource(defaultImage).uri
+
 export default class viewContactsScreen extends Component{
 
   state = {
     contacts: [],
     name: '',
     lastname: '',
-    selectedImage: defaultImageUri
+    selectedImage: defaultImageUri,
   }
-  _isMounted = false;
-  user  = firebase.firebase.auth().currentUser;
+  _unsubscribe = '';
+  _isMounted = false
+  user  = firebase.firebase.auth().currentUser
+
   componentDidMount() {
-    if (!this._isMounted) {
-      firebase.db.collection(this.user.email).onSnapshot(querySnapshot => {
-        let contacts = [];
-          querySnapshot.docs.forEach(value => {
-          const {name,lastname,alias} = value.data();
-          contacts.push({
-            id: value.id,
-            name,
-            lastname,
-            alias
-          });
-        })
-        this.setState({  
-          ...this.state,
-          contacts: contacts
+    this.initialPage()
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.initialPage();
+    })
+  }
+
+  initialPage() {
+    firebase.db.collection(this.user.email).onSnapshot(querySnapshot => {
+      let contacts = [];
+        querySnapshot.docs.forEach(value => {
+        const {name,lastname,alias} = value.data();
+        contacts.push({
+          id: value.id,
+          name,
+          lastname,
+          alias
         });
       })
-      this.getData();
-      this.urlImage();
-    }
+      this.setState({  
+        ...this.state,
+        contacts: contacts
+      });
+    })
+    this.getData()
+    this.urlImage()
   }
   
   componentWillUnmount() {
-    console.log("se eliminio PERRA");
-    this._isMounted = false;
+    this._isMounted = false
+    this._unsubscribe();
   }
-
-  componentDidUpdate(prevProps) {
-    console.log(prevProps.selectedImage);
-    if (this.props.somethingChanged !== prevProps.somethingChanged) {
-      // this.setState logic here
-    }
- }
-
+  
   async getData(){
-    console.log("getdata");
     let dbRef = firebase.db.collection('users').doc(this.user.uid);
     let doc = await dbRef.get();
     let userData = doc.data();
@@ -75,26 +75,27 @@ export default class viewContactsScreen extends Component{
   }
 
   urlImage () {
-    console.log("URL");
     let url = "";
     firebase.firebase
-        .storage()
-        .ref(`images/${this.user.uid}`)
-        .getDownloadURL()
-        .then(resolve =>{
-            url = resolve;
-            this.setState({
-              ...this.state,
-              selectedImage: url
-            })
-        })
-        .catch(error =>{
-            this.setState({
-              ...this.state,
-              selectedImage: defaultImageUri
-            })
-        })
+      .storage()
+      .ref(`images/${this.user.uid}`)
+      .getDownloadURL()
+      .then(resolve =>{
+          url = resolve
+          this.setState({
+            ...this.state,
+            selectedImage: url
+          })
+      })
+      .catch(error =>{
+          console.log(error);
+          this.setState({
+            ...this.state,
+            selectedImage: defaultImageUri
+          })
+      })
   }
+
   destroyContact = async (id) => {
     let dbRef = firebase.db.collection(this.user.email).doc(id)
     await dbRef.delete();
@@ -109,7 +110,7 @@ export default class viewContactsScreen extends Component{
                       size="large"
                       rounded
                       source={{
-                          uri: this.state.selectedImage    
+                          uri: this.state.selectedImage
                       }}
                       containerStyle={{
                           backgroundColor: 'grey'}}/> 

@@ -49,6 +49,7 @@ const storeScreen = (props) => {
 
     const updateUser= async () => {
         try {
+            setLoading(true);
             let dbRef = firebase.db.collection('users').doc(user.uid);
     
             await dbRef.set({
@@ -66,16 +67,16 @@ const storeScreen = (props) => {
                 
             const imageUri = selectedImage.localUri;
             let namePicture = user.uid;
-            if(imageUri != defaultImageUri) {
+            if(imageUri !== defaultImageUri) {
                 uploadImage(imageUri)
                     .then(resolve => {
                         let ref = firebase.firebase
                             .storage()
                             .ref()
-                            .child(`images/${namePicture}`);
-
+                            .child(`images/${namePicture}`)
                         ref.put(resolve).then(resolve =>{
-                            console.log('imagen subida');
+                            props.navigation.navigate('ViewContacts')
+                            setLoading(false)
                         }).catch(error =>{
                             console.log(error);
                         });
@@ -85,8 +86,6 @@ const storeScreen = (props) => {
                         console.log(error);
                     });
             }
-
-            props.navigation.navigate('ViewContacts')
         } catch (e) {
             console.log(e);
         }
@@ -200,7 +199,7 @@ const storeScreen = (props) => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
         if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
+            alert("Permiso denegado!");
             return;
         }
 
@@ -218,8 +217,8 @@ const storeScreen = (props) => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
         if (permissionResult.granted === false) {
-          alert("Permission to access camera roll is required!");
-          return;
+            alert("Permission to access camera roll is required!");
+            return;
         }
 
         let pickerResult = await ImagePicker.launchCameraAsync();
@@ -254,7 +253,6 @@ const storeScreen = (props) => {
     }
 
     return (
-       
         <Background>
             <ScrollView>
                 <Avatar
@@ -268,7 +266,7 @@ const storeScreen = (props) => {
                         backgroundColor: 'grey',
                         alignSelf: 'center',
                         justifyContent: 'center'}}>
-                     <Avatar.Accessory  
+                    <Avatar.Accessory  
                             {...styles.Accessory}
                             size={20}
                             onPress={() => refRBSheet.current.open()}
