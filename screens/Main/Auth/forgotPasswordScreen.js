@@ -4,15 +4,15 @@ import {
 } from 'react-native';
 
 //Componentes
-import TextInput from '../components/TextInput'
-import Header from '../components/header'
-import Button from '../components/button'
-import Logo from '../components/logo'
-import Background from '../components/background'
-import firebase from '../database/firebase'
+import TextInput from '../../../components/TextInput'
+import Header from '../../../components/header'
+import Button from '../../../components/button'
+import Logo from '../../../components/logo'
+import Background from '../../../components/background'
+import firebase from '../../../database/firebase'
 
 //Helpers
-import { emailValidator } from '../helpers/emailValidator';
+import { emailValidator } from '../../../helpers/emailValidator';
 
 
 const forgotPasswordScreen = ({ navigation }) => {

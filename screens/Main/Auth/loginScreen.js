@@ -7,19 +7,19 @@ import {
   StyleSheet
 } from 'react-native';
 
-import firebase from '../database/firebase'
+import firebase from '../../../database/firebase'
 
 //componentes
-import TextInput from '../components/TextInput'
-import Background from '../components/background'
-import Logo from '../components/logo'
-import Button from '../components/button'
-import Header from '../components/header'
-import { theme } from '../core/theme'
+import TextInput from '../../../components/TextInput'
+import Background from '../../../components/background'
+import Logo from '../../../components/logo'
+import Button from '../../../components/button'
+import Header from '../../../components/header'
+import { theme } from '../../../core/theme'
 
 //Helpers
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
+import { emailValidator } from '../../../helpers/emailValidator'
+import { passwordValidator } from '../../../helpers/passwordValidator'
 
 const loginScreen = ({ navigation }) => {
 

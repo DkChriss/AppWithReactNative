@@ -7,7 +7,7 @@ import * as Permissions from 'expo-permissions'
 import { ActivityIndicator, Colors } from 'react-native-paper'
 
 //DB 
-import firebase from '../database/firebase'
+import firebase from '../../database/firebase'
 //CONST
 const GEOLOCATION_OPTIONS = { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
 const GOOGLE_MAPS_APIKEY = 'AIzaSyBhhNqCp2WyczFOJ7OebEHVn76QBW3xrMI'

@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 
 //Componentes
-import TextInput from '../components/TextInput';
-import Button from '../components/button';
-import Background from '../components/background';
-import { theme } from '../core/theme'
+import TextInput from '../../components/TextInput';
+import Button from '../../components/button';
+import Background from '../../components/background';
+import { theme } from '../../core/theme'
 
 //Paquetes
 import { ActivityIndicator, Colors, Switch} from 'react-native-paper';
@@ -22,14 +22,14 @@ import * as Permissions from 'expo-permissions';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 //DB
-import firebase from '../database/firebase'
+import firebase from '../../database/firebase'
 
 //helpers
-import { emailValidator } from '../helpers/emailValidator';
-import { textValidator } from '../helpers/textValidatorOne';
-import { lastNameValidator } from '../helpers/lastNameValidator';
-import { nickNameValidator } from "../helpers/nickNameValidator";
-import { numberValidator } from "../helpers/numberValidator";
+import { emailValidator } from '../../helpers/emailValidator';
+import { textValidator } from '../../helpers/textValidatorOne';
+import { lastNameValidator } from '../../helpers/lastNameValidator';
+import { nickNameValidator } from "../../helpers/nickNameValidator";
+import { numberValidator } from "../../helpers/numberValidator";
 
 
 const storeContactScreen = (props) =>{
@@ -57,7 +57,7 @@ const storeContactScreen = (props) =>{
 
     //Profile Picture
     const refRBSheet = useRef();
-    const defaultImage = require('../images/add-person.png');
+    const defaultImage = require('../../images/add-person.png');
     const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
     const [selectedImage, setSelectedImage] = useState({ localUri: defaultImageUri});
     const [sizePicture] = useState({value: 150})
