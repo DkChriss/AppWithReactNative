@@ -11,26 +11,27 @@ import {
 
 
 //Importaciones Locales
-import { theme } from '../core/theme'
+import { theme } from '../../core/theme'
 
 //Importaciones de Componentes
-import TextInput from '../components/TextInput'
-import Header from '../components/header'
-import Button from '../components/button'
-import Background from '../components/background'
+import TextInput from '../../components/TextInput'
+import Header from '../../components/header'
+import Button from '../../components/button'
+import Background from '../../components/background'
+
 import { Avatar, ListItem, Icon } from "react-native-elements"
 import * as ImagePicker from 'expo-image-picker'
 import RBSheet from "react-native-raw-bottom-sheet";
 
 //Importaciones de Helpers
-import { textValidator } from '../helpers/textValidator'
-import { equalPasswordValidator } from '../helpers/equalPasswordValidator'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
+import { textValidator } from '../../helpers/textValidator'
+import { equalPasswordValidator } from '../../helpers/equalPasswordValidator'
+import { emailValidator } from '../../helpers/emailValidator'
+import { passwordValidator } from '../../helpers/passwordValidator'
 
 //Importacion de Firebase
 
-import firebase from '../database/firebase'
+import firebase from '../../database/firebase'
 
 const storeScreen = ({ navigation }) => {
 
@@ -44,7 +45,7 @@ const storeScreen = ({ navigation }) => {
 
   //Image
   const [sizePicture] = useState({value: 150})
-  const defaultImage = require('../images/add-person.png');
+  const defaultImage = require('../../images/add-person.png');
   const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
   const [selectedImage, setSelectedImage] = useState({ localUri: defaultImageUri});
 

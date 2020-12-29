@@ -1,11 +1,13 @@
-import React,{ Component } from 'react';
+import React,{ 
+    Component, 
+    useState, 
+    useEffect 
+} from 'react';
 import { StyleSheet, View, Image,Text } from 'react-native';
-import TextInput from '../components/TextInput';
-import Button from '../components/button';
-import Background from '../components/background';
-import { theme } from '../core/theme'
-import { useState } from 'react';
-import { useEffect } from 'react';
+import TextInput from '../../components/TextInput';
+import Button from '../../components/button';
+import Background from '../../components/background';
+import { theme } from '../../core/theme'
 
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
@@ -13,14 +15,14 @@ import * as Permissions from 'expo-permissions';
 import { ActivityIndicator, Colors, Switch } from 'react-native-paper';
 
 //DB
-import firebase from '../database/firebase'
+import firebase from '../../database/firebase'
 
 //helpers
-import { emailValidator } from '../helpers/emailValidator';
-import { textValidator } from '../helpers/textValidatorOne';
-import { lastNameValidator } from '../helpers/lastNameValidator';
-import { nickNameValidator } from "../helpers/nickNameValidator";
-import { numberValidator } from "../helpers/numberValidator";
+import { emailValidator } from '../../helpers/emailValidator';
+import { textValidator } from '../../helpers/textValidatorOne';
+import { lastNameValidator } from '../../helpers/lastNameValidator';
+import { nickNameValidator } from "../../helpers/nickNameValidator";
+import { numberValidator } from "../../helpers/numberValidator";
 
 
 const storeContactScreen = (props) =>{
@@ -169,7 +171,7 @@ const storeContactScreen = (props) =>{
     return(
             <Background>
                 <View style={styles.container}>
-                    <Image source={require('../images/user.jpg')} style={styles.image} />    
+                    <Image source={require('../../images/user.jpg')} style={styles.image} />    
                     <TextInput
                         label="Nombre"
                         returnKeyType="done"

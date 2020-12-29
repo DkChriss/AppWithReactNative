@@ -10,12 +10,12 @@ import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
 import {Avatar as AvatarElement, Icon} from 'react-native-elements'; 
 
 //DB
-import firebase from '../database/firebase'
+import firebase from '../../database/firebase'
 //Componentes
-import { theme } from '../core/theme'
-import Button from '../components/button'
-import BackgroundBack from '../components/backgroundBack'
-const defaultImage = require('../images/add-person.png')
+import { theme } from '../../core/theme'
+import Button from '../../components/button'
+import BackgroundBack from '../../components/backgroundBack'
+const defaultImage = require('../../images/add-person.png')
 const defaultImageUri = Image.resolveAssetSource(defaultImage).uri
 
 export default class viewContactsScreen extends Component{

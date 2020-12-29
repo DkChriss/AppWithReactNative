@@ -12,15 +12,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 //Importaciones locales
-import Login from './screens/loginScreen'
+import Login from './screens/Main/Auth/loginScreen'
+import ForgotPassword from './screens/Main/Auth/forgotPasswordScreen'
+import Update from './screens/Main/updateScreen'
+import Register from './screens/Main/storeScreen'
+
 import Home  from './screens/homeScreen'
-import Register from './screens/storeScreen'
-import StoreContact from './screens/storeContactScreen'
-import UpdateContact from './screens/updateContactScreen'
-import ViewContacts from './screens/viewContactsScreen'
-import MapContact from './screens/mapContact'
-import ForgotPassword from './screens/forgotPasswordScreen'
-import Update from './screens/updateScreen'
+import StoreContact from './screens/Contacts/storeContactScreen'
+import UpdateContact from './screens/Contacts/updateContactScreen'
+import ViewContacts from './screens/Contacts/viewContactsScreen'
+import MapContact from './screens/Contacts/mapContact'
 
 //STYLES
 import { theme } from './core/theme';
