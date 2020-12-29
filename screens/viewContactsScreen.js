@@ -1,26 +1,22 @@
-import React, { Component, useRef, useState, useEffect } from 'react';
+import React, { Component} from 'react';
 import { 
   StyleSheet,
-  View, 
+  View,
   Image,
   TouchableOpacity,
   Text
 } from 'react-native';
-
-import { Card, Avatar, IconButton, Colors, ActivityIndicator } from 'react-native-paper';
+import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
 import {Avatar as AvatarElement, Icon} from 'react-native-elements'; 
 
 //DB
 import firebase from '../database/firebase'
-
 //Componentes
 import { theme } from '../core/theme'
+import Button from '../components/button'
 import BackgroundBack from '../components/backgroundBack'
-import Header from '../components/header'
-
 const defaultImage = require('../images/add-person.png');
 const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
-const refRBSheet = useRef();
 export default class viewContactsScreen extends Component{
 
   state = {
@@ -30,11 +26,10 @@ export default class viewContactsScreen extends Component{
     selectedImage: defaultImageUri
   }
   _isMounted = false;
-
+  user  = firebase.firebase.auth().currentUser;
   componentDidMount() {
     if (!this._isMounted) {
-      let user = firebase.firebase.auth().currentUser;
-      firebase.db.collection(user.email).onSnapshot(querySnapshot => {
+      firebase.db.collection(this.user.email).onSnapshot(querySnapshot => {
         let contacts = [];
           querySnapshot.docs.forEach(value => {
           const {name,lastname,alias} = value.data();
@@ -45,20 +40,46 @@ export default class viewContactsScreen extends Component{
             alias
           });
         })
-        this.setState({contacts: contacts});
+        this.setState({  
+          ...this.state,
+          contacts: contacts
+        });
       })
+      this.getData();
+      this.urlImage();
     }
   }
   
   componentWillUnmount() {
+    console.log("se eliminio PERRA");
     this._isMounted = false;
   }
 
+  componentDidUpdate(prevProps) {
+    console.log(prevProps.selectedImage);
+    if (this.props.somethingChanged !== prevProps.somethingChanged) {
+      // this.setState logic here
+    }
+ }
+
+  async getData(){
+    console.log("getdata");
+    let dbRef = firebase.db.collection('users').doc(this.user.uid);
+    let doc = await dbRef.get();
+    let userData = doc.data();
+    this.setState({
+      ...this.state,
+      name: userData.name,
+      lastname: userData.lastname
+    });
+  }
+
   urlImage () {
+    console.log("URL");
     let url = "";
     firebase.firebase
         .storage()
-        .ref(`images/${user.uid}`)
+        .ref(`images/${this.user.uid}`)
         .getDownloadURL()
         .then(resolve =>{
             url = resolve;
@@ -74,11 +95,8 @@ export default class viewContactsScreen extends Component{
             })
         })
   }
-
   destroyContact = async (id) => {
-    let user = firebase.firebase.auth().currentUser;
-    let dbRef = firebase.db.collection(user.email).doc(id)
-    deleteImageFirebase(id);
+    let dbRef = firebase.db.collection(this.user.email).doc(id)
     await dbRef.delete();
   }
 
@@ -96,16 +114,18 @@ export default class viewContactsScreen extends Component{
                       containerStyle={{
                           backgroundColor: 'grey'}}/> 
               </View>
-              <View style={{
-                  marginTop: -65,
-                  paddingLeft: 100,
-                  alignSelf: 'flex-start',}}
-                  >
-                    <Text style={styles.title}>{this.state.name + " " + this.state.lastname}</Text>
-                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('Update')}>
-                      <Text style={styles.link}>Editar perfil</Text>
-                    </TouchableOpacity>
-              </View> 
+
+                <View style={{
+                    marginTop: -65,
+                    paddingLeft: 100,
+                    alignSelf: 'flex-start',}}
+                    >
+                      <Text style={styles.title}>{this.state.name + " " + this.state.lastname}</Text>
+                      <TouchableOpacity  onPress={() => this.props.navigation.navigate('Update')}>
+                        <Text style={styles.link}>Editar perfil</Text>
+                      </TouchableOpacity>
+                </View> 
+              
           {
             this.state.contacts.map(contact => {
               return (
@@ -133,7 +153,7 @@ export default class viewContactsScreen extends Component{
                               userId: contact.id
                               })
                             }} 
-                          />
+                        />
                       </Card.Actions>
                     }
                   />
