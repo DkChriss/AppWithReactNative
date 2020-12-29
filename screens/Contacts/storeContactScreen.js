@@ -238,8 +238,6 @@ const storeContactScreen = (props) =>{
 
     return(    
         <Background> 
-            <ScrollView  style={styles.scrollView}>
-                <View style={styles.container}>
                     <Avatar
                         size="large"
                         onPress={() => refRBSheet.current.open()}
@@ -338,22 +336,23 @@ const storeContactScreen = (props) =>{
                         keyboardType="email-address"
                     />
 
-                    <Text>
+                    <Text style= {{marginRight: 150, flex:1, flexDirection: 'column'}}>
                         {enableSwitch.text}
                     </Text>
                     <Switch
+                    style= {{marginLeft: 150, flex: 1, marginTop: -20}}
                         value={isSwitchOn} 
                         onValueChange={onToggleSwitch} 
                         tintColor='#DEDEDE'
                         disabled={enableSwitch.disabled}
                     />
                     <Button
+                    style={{marginButton: 0}}
                         mode="contained"
                         onPress={ validateFields }>
-                        Guardar Contacto
+                        Guardar Contacto 
                     </Button>
-                </View>
-            </ScrollView>
+           
             <RBSheet
                     ref={refRBSheet}
                     closeOnDragDown={true}

@@ -10,11 +10,11 @@ const background = ({ children }) => (
     style={styles.background}
     source={require('../images/background.png')}
   >
-   <ScrollView>
-      <View style={styles.container}>
-           {children}
-      </View>
-    </ScrollView>
+    <ScrollView>
+    <View style={styles.container} behavior="padding">
+      {children}
+    </View>
+        </ScrollView>
   </ImageBackground>
 )
 
