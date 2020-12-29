@@ -93,32 +93,35 @@ export default function App() {
           <Stack.Screen 
             name="Login" 
             component={Login} 
-            options={{ headerTitle: '' }}/>
+            options={{ headerTitle: 'Iniciar Sesión' }}/>
             
           <Stack.Screen
             name= "Register"
             component={Register}
-            options={{ headerTitle: ''}}/>   
+            options={{ headerTitle: 'Nueva cuenta'}}/>   
           
           <Stack.Screen
             name= "Update"
             component={Update}
             options= {{
               back: true,
-              headerTitle: ''
+              headerTitle: 'Datos personales'
             }}/>   
 
 
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPassword}
+            options = {{
+              headerTitle: 'Recuperación'
+            }}
           />
 
           <Stack.Screen 
             name="ViewContacts"
             component={ViewContacts} 
             options={{
-              headerTitle: '',
+              headerTitle: 'Contactos',
               logOut: true,
               hasAction: true,
               action_1: {
@@ -132,16 +135,22 @@ export default function App() {
             component={StoreContact} 
             options= {{
               back: true,
-              headerTitle: ''
+              headerTitle: 'Nuevo contacto'
             }}
           />
           <Stack.Screen
             name="UpdateContact"
             component={UpdateContact}
+            options = {{
+              headerTitle: 'Editar contacto'
+            }}
           />  
           <Stack.Screen
             name="MapContact"
             component={MapContact}
+            options={{
+              headerTitle: 'Dirección'
+            }}
           />
       </Stack.Navigator>    
     </NavigationContainer>
