@@ -11,7 +11,7 @@ import firebase from '../database/firebase'
 
 //componentes
 import TextInput from '../components/TextInput'
-import Background from '../components/background'
+import BackgroundLogin from '../components/backgroundLogin'
 import Logo from '../components/logo'
 import Button from '../components/button'
 import Header from '../components/header'
@@ -61,7 +61,7 @@ const loginScreen = ({ navigation }) => {
 
   return (
   
-      <Background >
+      <BackgroundLogin >
       
       <Logo></Logo>
       <Header>
@@ -107,7 +107,7 @@ const loginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
        
-    </Background>
+    </BackgroundLogin>
   );
 }
 

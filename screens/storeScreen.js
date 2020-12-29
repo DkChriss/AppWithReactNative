@@ -208,158 +208,107 @@ const storeScreen = ({ navigation }) => {
 
 
   return (
-        <Background>
-            <ScrollView> 
-                <Avatar
-                    size="large"
-                    onPress={() => refRBSheet.current.open()}
-                    rounded
-                    source={{
-                        uri: selectedImage.localUri     
-                    }}
-                    containerStyle={{
-                        backgroundColor: 'grey',
-                        alignSelf: 'center',
-                        justifyContent: 'center'}}>
-                    <Avatar.Accessory  
-                      {...styles.Accessory}
-                      size={20}
-                      onPress={() => refRBSheet.current.open()}
-                    />
-                </Avatar>
-                <Header>
-                  Crear una cuenta
-                </Header>
-                <TextInput
-                  label="Nombre"
-                  returnKeyType="done"
-                  value={name.value}
-                  onChangeText={
-                    (text) => setName({
-                      value: text,
-                      error: ''
-                    })
-                  }
-                  error={!!name.error}
-                  errorText={name.error}
-                  />
-                <TextInput
-                  label="Apellido"
-                  returnKeyType="done"
-                  value={lastname.value}
-                  onChangeText={
-                    (text) => setLastName({
-                      value: text,
-                      error: ''
-                    })
-                  }
-                  error={!!lastname.error}
-                  errorText={lastname.error}
-                />
-                <TextInput
-                  label="Apodo"
-                  returnKeyType="done"
-                  value={nickname.value}
-                  onChangeText={
-                    (text) => setNickName({
-                      value: text,
-                      error: ''
-                    })
-                  }
-                  error={!!nickname.error}
-                  errorText={nickname.error}
-                />
-                <TextInput
-                  label="Correo electronico"
-                  value={email.value}
-                  onChangeText={
-                    (text) => setEmail({
-                      value: text,
-                      error: ''
-                    })
-                  }
-                  error={!!email.error}
-                  errorText={email.error}
-                  autoCompleteType="email"
-                  textContentType="emailAddress"
-                  keyboardType="email-address"
-                />
-                <TextInput
-                  label="Contraseña"
-                  returnKeyType="done"
-                  value={password.value}
-                  onChangeText={
-                    (text) => setPassword({
-                      value: text,
-                      error: ''
-                    })
-                  }
-                  error={!!password.error}
-                  errorText={password.error}
-                  secureTextEntry/>
+    
+    <Background>
+        <Logo></Logo>
+        <Header>
+          Crear una cuenta
+        </Header>
+        <TextInput
+          label="Nombre"
+          returnKeyType="done"
+          value={name.value}
+          onChangeText={
+            (text) => setName({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!name.error}
+          errorText={name.error}
+        />
+        <TextInput
+          label="Apellido"
+          returnKeyType="done"
+          value={lastname.value}
+          onChangeText={
+            (text) => setLastName({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!lastname.error}
+          errorText={lastname.error}
+        />
+        <TextInput
+          label="Apodo"
+          returnKeyType="done"
+          value={nickname.value}
+          onChangeText={
+            (text) => setNickName({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!nickname.error}
+          errorText={nickname.error}
+        />
+        <TextInput
+          label="Correo electronico"
+          returnKeyType="done"
+          value={email.value}
+          onChangeText={
+            (text) => setEmail({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!email.error}
+          errorText={email.error}
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <TextInput
+          label="Contraseña"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={
+            (text) => setPassword({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!password.error}
+          errorText={password.error}
+          secureTextEntry/>
 
-                <TextInput
-                  label="Confirmar Contraseña"
-                  returnKeyType="done"
-                  value={equalPassword.value}
-                  onChangeText={
-                    (text) => setEqualPassword({
-                      value: text,
-                      error: ''
-                    })
-                  }
-                  error={!!equalPassword.error}
-                  errorText={equalPassword.error}
-                  secureTextEntry/>
+        <TextInput
+          label="Confirmar Contraseña"
+          returnKeyType="done"
+          value={equalPassword.value}
+          onChangeText={
+            (text) => setEqualPassword({
+              value: text,
+              error: ''
+            })
+          }
+          error={!!equalPassword.error}
+          errorText={equalPassword.error}
+          secureTextEntry/>
 
-                <Button 
-                  mode="contained"
-                  onPress={ onStorePressed }>
-                  Crear cuenta
-                </Button>
-                <View style={styles.row}>
-                  <Text>¿Tienes cuenta? </Text>
-                  <TouchableOpacity onPress={() => navigation.replace('Login')}>
-                    <Text style={styles.link}>Iniciar Sesion</Text>
-                  </TouchableOpacity>
-                </View>
-            </ScrollView>
-            <RBSheet
-              ref={refRBSheet}
-              closeOnDragDown={true}
-              closeOnPressMask={false}
-              height={sizePicture.value}
-              customStyles={{
-                  wrapper: {
-                      backgroundColor: "transparent"
-                  },
-                  draggableIcon: {
-                      backgroundColor: "#000"
-                  }
-              }}>
-              <View>
-                  <ListItem onPress={openCamareAsync}>
-                      <Icon 
-                          name='camera'
-                          type='ionicon'
-                          />
-                      <ListItem.Content>
-                          <ListItem.Title>Tomar una Foto</ListItem.Title>
-                      </ListItem.Content>
-                  </ListItem>
-                  <ListItem onPress={openImagePickerAsync}>
-                      <Icon 
-                          name='image'
-                          type='ionicon'
-                          />
-                      <ListItem.Content>
-                          <ListItem.Title>Seleccionar una Foto</ListItem.Title>
-                      </ListItem.Content>
-                  </ListItem>
-                  {eliminarFoto()}
-              </View>
-            </RBSheet>
-      </Background>
+        <Button 
+          mode="contained"
+          onPress={ onStorePressed }>
+          Crear cuenta
+        </Button>
+        <View style={styles.row}>
+          <Text>¿Tienes cuenta? </Text>
+          <TouchableOpacity onPress={() => navigation.replace('Login')}>
+            <Text style={styles.link}>Iniciar Sesion</Text>
+          </TouchableOpacity>
+        </View>
+    </Background>
     
   );
 }
