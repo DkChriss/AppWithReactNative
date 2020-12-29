@@ -201,7 +201,7 @@ const storeContactScreen = (props) =>{
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
         if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
+            alert("Permiso requerido!");
             return;
         }
 

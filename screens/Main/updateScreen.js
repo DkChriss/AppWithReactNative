@@ -43,7 +43,7 @@ const storeScreen = (props) => {
 
     const refRBSheet = useRef();
 
-    const [sizePicture] = useState({value: 150})
+    const [sizePicture] = useState({value: 200})
     const defaultImage = require('../../images/add-person.png');
     const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
     const user = firebase.firebase.auth().currentUser;
@@ -120,10 +120,10 @@ const storeScreen = (props) => {
     }
 
     const getData = async () => {
+        urlImage();
         let dbRef = firebase.db.collection('users').doc(user.uid);
         let doc = await dbRef.get();
         let userData = doc.data();
-        urlImage();
 
         setName({
             value: userData.name,
@@ -153,9 +153,11 @@ const storeScreen = (props) => {
             .then(resolve =>{
                 url = resolve;
                 setSelectedImage({ localUri: url})
+                sizePicture.value = 200; 
             })
             .catch(error =>{
                 setSelectedImage({ localUri: defaultImageUri})
+                sizePicture.value = 200; 
             })
     }
 
@@ -239,23 +241,9 @@ const storeScreen = (props) => {
         refRBSheet.current.close();
     }
 
-    const eliminarFoto = ()  => { 
-        if(selectedImage.localUri != defaultImageUri && selectedImage.localUri != undefined){   
-            sizePicture.value = 200;
-            return(
-                <ListItem onPress={deletePicture}>
-                    <ListItem.Content>
-                        <ListItem.Title>Eliminar Foto</ListItem.Title>
-                    </ListItem.Content>
-                </ListItem>
-            )
-        }
-        return;
-    }
 
     return (
         <Background>
-            <ScrollView>
                 <Avatar
                     size="large"
                     onPress={() => refRBSheet.current.open()}
@@ -367,7 +355,6 @@ const storeScreen = (props) => {
                     Actualizar Datos
                 </Button>
                 <View style={styles.row}/>
-            </ScrollView>
             <RBSheet
                     ref={refRBSheet}
                     closeOnDragDown={true}
@@ -400,7 +387,15 @@ const storeScreen = (props) => {
                                 <ListItem.Title>Seleccionar una Foto</ListItem.Title>
                             </ListItem.Content>
                         </ListItem>
-                        {eliminarFoto()}
+                        <ListItem onPress={deletePicture}>
+                            <Icon 
+                                name='trash'
+                                type='ionicon'
+                            />
+                            <ListItem.Content>
+                                <ListItem.Title>Eliminar Foto</ListItem.Title>
+                            </ListItem.Content>
+                        </ListItem>
                     </View>
             </RBSheet>
         </Background>
