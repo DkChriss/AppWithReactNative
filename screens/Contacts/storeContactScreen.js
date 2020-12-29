@@ -238,8 +238,6 @@ const storeContactScreen = (props) =>{
 
     return(    
         <Background> 
-            <ScrollView  style={styles.scrollView}>
-                <View style={styles.container}>
                     <Avatar
                         size="large"
                         onPress={() => refRBSheet.current.open()}
@@ -348,12 +346,12 @@ const storeContactScreen = (props) =>{
                         disabled={enableSwitch.disabled}
                     />
                     <Button
+                    style={{marginButton: 0}}
                         mode="contained"
                         onPress={ validateFields }>
-                        Guardar Contacto
+                        Guardar Contacto 
                     </Button>
-                </View>
-            </ScrollView>
+           
             <RBSheet
                     ref={refRBSheet}
                     closeOnDragDown={true}

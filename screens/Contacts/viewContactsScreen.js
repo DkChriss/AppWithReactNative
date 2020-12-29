@@ -114,12 +114,14 @@ export default class viewContactsScreen extends Component{
                       }}
                       containerStyle={{
                           backgroundColor: 'grey'}}/> 
+                      
               </View>
 
                 <View style={{
                     marginTop: -65,
                     paddingLeft: 100,
-                    alignSelf: 'flex-start',}}
+                    alignSelf: 'flex-start',
+                  marginBottom: 29,}}
                     >
                       <Text style={styles.title}>{this.state.name + " " + this.state.lastname}</Text>
                       <TouchableOpacity  onPress={() => this.props.navigation.navigate('Update')}>
@@ -130,7 +132,7 @@ export default class viewContactsScreen extends Component{
           {
             this.state.contacts.map(contact => {
               return (
-                <Card key={contact.id}>
+                <Card style={styles.file}>
                   <Card.Title
                     title={contact.alias}
                     subtitle={contact.name+" "+contact.lastname}
@@ -184,6 +186,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 22,
+    paddingLeft: 11,
+    paddingRight: 11,
   },
   item: {
     padding: 10,
@@ -192,5 +196,10 @@ const styles = StyleSheet.create({
   },
   title :{
     fontSize: 25,
+  },
+  file:{
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    marginBottom: 1,
   }
+  
 });

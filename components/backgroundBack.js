@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { ImageBackground, StyleSheet, KeyboardAvoidingView, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { theme } from '../core/theme'
 
@@ -11,10 +11,10 @@ const backgroundBack = ({ children }) => (
     
   >
     <ScrollView style={styles.scrollView}>
-      <KeyboardAvoidingView  
+      <View  
       behavior="padding">
         {children}
-      </KeyboardAvoidingView>
+      </View>
     </ScrollView>
   </ImageBackground>
 );
