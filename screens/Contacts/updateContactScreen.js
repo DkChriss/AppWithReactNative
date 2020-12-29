@@ -117,7 +117,10 @@ const storeContactScreen = (props) =>{
                         console.log(error);
                     });
             }
-            props.navigation.navigate('ViewContacts')
+            else {
+                setLoading(false)
+                props.navigation.navigate('ViewContacts')
+            }
         } catch (e) {
             console.log(e);
             setLoading(false)

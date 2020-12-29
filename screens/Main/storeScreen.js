@@ -79,19 +79,21 @@ const storeScreen = ({ navigation }) => {
                         .child(`images/${namePicture}`);
 
                     ref.put(resolve).then(resolve =>{
-                        console.log('imagen subida');
                     }).catch(error =>{
                         console.log(error);
-                    });
+                    }).finally(() =>{
+                        navigation.navigate('ViewContacts')
+                    })
 
                 })
                 .catch(error =>{
                     console.log(error);
                 });
         }
-
-        //REDIRECCIONAR
-        navigation.navigate('ViewContacts')
+        else{
+          //REDIRECCIONAR
+          navigation.navigate('ViewContacts')
+        }
       })
       .catch(error => {
         if (error.code === 'auth/user-not-found') {
