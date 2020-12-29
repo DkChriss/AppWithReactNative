@@ -228,9 +228,6 @@ const storeScreen = ({ navigation }) => {
                   onPress={() => refRBSheet.current.open()}
                 />
             </Avatar>
-            <Header>
-              Crear una cuenta
-            </Header>
             <TextInput
               label="Nombre"
               returnKeyType="done"

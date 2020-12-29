@@ -4,10 +4,12 @@ import {
   View,
   Image,
   TouchableOpacity,
+  LogBox,
   Text
 } from 'react-native';
-import { Card, Avatar, IconButton, ActivityIndicator, Colors } from 'react-native-paper';
-import {Avatar as AvatarElement, Icon} from 'react-native-elements'; 
+import { Card, Avatar, IconButton, ActivityIndicator, Colors } from 'react-native-paper'
+import {Avatar as AvatarElement, Icon} from 'react-native-elements'
+import ActionButton from 'react-native-circular-action-menu'
 //DB
 import firebase from '../../database/firebase'
 //Componentes
@@ -37,6 +39,7 @@ export default class viewContactsScreen extends Component{
     })
   }
   initialPage() {
+    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
     this.getData()
     this.urlImage()
     //ARRAY OBJECTS
@@ -151,25 +154,38 @@ export default class viewContactsScreen extends Component{
                     }
                     right={
                       (props) => 
-                      <Card.Actions>
-                        <IconButton {...props} icon="pencil" onPress={() => {
-                          this.props.navigation.navigate('UpdateContact', {
-                          userId: contact.id
-                          })
-                        }} />
-                        <IconButton {...props} icon="delete" 
-                        color={Colors.red800}
-                        onPress={() => {this.destroyContact(contact.id)}} />
-                        <Icon {...props}
-                            name='location'
-                            type='ionicon'
+                      <View style={styles.ActionButton}>
+                        <ActionButton 
+                          {...props}
+                          buttonColor="rgba(231,76,60,1)" 
+                          position="right" >
+                          <ActionButton.Item buttonColor='#9b59b6' title="Editar Contacto" 
+                          onPress={
+                            () =>this.props.navigation.navigate(
+                              'UpdateContact', 
+                              {
+                                userId: contact.id
+                              }
+                            )
+                          }>
+                            <Icon name="edit" style={styles.actionButtonIcon} />
+                          </ActionButton.Item>
+                          <ActionButton.Item buttonColor='#3498db' title="Eliminar Contacto" 
+                            onPress={() => {this.destroyContact(contact.id)}}>
+                            <Icon name="delete" style={styles.actionButtonIcon} />
+                          </ActionButton.Item>
+                          <ActionButton.Item 
+                            buttonColor='#1abc9c' 
+                            title="Ver ubicacion" 
                             onPress={() => {
                               this.props.navigation.navigate('MapContact', {
                                 userId: contact.id
                               })
-                            }} 
-                        />
-                      </Card.Actions>
+                            }}>
+                            <Icon name='location'type='ionicon' />
+                          </ActionButton.Item>
+                        </ActionButton>
+                      </View>
                     }
                   />
                 </Card>
@@ -212,6 +228,9 @@ const styles = StyleSheet.create({
   file:{
     backgroundColor: 'rgba(255,255,255,0.4)',
     marginBottom: 1,
+  },
+  ActionButton: {
+    width: 20,
+    marginRight: 10,
   }
-  
 });
