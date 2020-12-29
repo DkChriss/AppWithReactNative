@@ -253,6 +253,7 @@ const storeContactScreen = (props) =>{
                         {enableSwitch.text}
                     </Text>
                     <Switch
+                     style= {{marginLeft: 150, flex: 1, marginTop: -20}}
                         value={isSwitchOn} 
                         onValueChange={onToggleSwitch} 
                         tintColor='#DEDEDE'

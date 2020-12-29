@@ -132,7 +132,7 @@ export default class viewContactsScreen extends Component{
           {
             this.state.contacts.map(contact => {
               return (
-                <Card style={styles.file}>
+                <Card key={contact.id} style={styles.file}>
                   <Card.Title
                     title={contact.alias}
                     subtitle={contact.name+" "+contact.lastname}
