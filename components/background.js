@@ -10,10 +10,7 @@ const background = ({ children }) => (
     style={styles.background}
     source={require('../images/background.png')}
   >
-    <ScrollView contentContainerStyle={{
-       flex: 1,
-        justifyContent: 'center'
-    }}>
+   <ScrollView>
       <View style={styles.container}>
            {children}
       </View>
