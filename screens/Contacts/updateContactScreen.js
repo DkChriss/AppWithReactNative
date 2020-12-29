@@ -228,15 +228,15 @@ const storeContactScreen = (props) =>{
 
     if(loading) {
         return (
-            <AnimatedSplash
+        <AnimatedSplash
             translucent={true}
             isLoaded={loading}
-            logoImage={require('../../images/logotipo.png')}
-            backgroundColor={"#685CBD"}
-            logoHeight={150}
-            logoWidth={150}
-          >
-          </AnimatedSplash>
+            logoImage = { require ( "../../images/logotipo.png" ) } 
+            backgroundColor = { "#E7E6F3" } 
+            logoHeight = { 170 } 
+            logoWidth = { 170 } 
+            >
+        </AnimatedSplash>
         )
     }
     function urlImage () {
