@@ -22,7 +22,7 @@ import StoreContact from './screens/Contacts/storeContactScreen'
 import UpdateContact from './screens/Contacts/updateContactScreen'
 import ViewContacts from './screens/Contacts/viewContactsScreen'
 import MapContact from './screens/Contacts/mapContact'
-
+import MapGlobal from './screens/Contacts/mapGlobalContact'
 //STYLES
 import { theme } from './core/theme';
 
@@ -151,6 +151,10 @@ export default function App() {
             options={{
               headerTitle: 'Dirección'
             }}
+          />
+          <Stack.Screen
+            name="MapGlobal"
+            component={MapGlobal}
           />
       </Stack.Navigator>    
     </NavigationContainer>
