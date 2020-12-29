@@ -93,11 +93,11 @@ export default class Map extends Component {
             return (
                 <AnimatedSplash
                 translucent={true}
-                isLoaded={this.state.isLoaded}
-                logoImage={require('../../images/logotipo.png')}
-                backgroundColor={"#685CBD"}
-                logoHeight={150}
-                logoWidth={150}
+                isLoaded={this.state.loading}
+                logoImage = { require ( "../../images/logotipo.png" ) } 
+                backgroundColor = { "#E7E6F3" } 
+                logoHeight = { 170 } 
+                logoWidth = { 170 } 
               >
               </AnimatedSplash>
             )

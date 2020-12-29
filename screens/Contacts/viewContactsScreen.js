@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   LogBox,
-  Text
+  Text,
+  ImageBackground, 
 } from 'react-native';
 import { Card, Avatar, IconButton, ActivityIndicator, Colors } from 'react-native-paper'
 import {Avatar as AvatarElement, Icon} from 'react-native-elements'
@@ -41,7 +42,7 @@ export default class viewContactsScreen extends Component{
     })
   }
   initialPage() {
-    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+   LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
     this.getData()
     this.urlImage()
     //ARRAY OBJECTS
@@ -112,13 +113,14 @@ export default class viewContactsScreen extends Component{
   render () {
     return (
       this.state.loading 
-      ?<AnimatedSplash
+      ?  <AnimatedSplash
       translucent={true}
-      isLoaded={this.state.isLoaded}
-      logoImage={require('../../images/logotipo.png')}
-      backgroundColor={"#685CBD"}
-      logoHeight={150}
-      logoWidth={150}
+      isLoaded={this.state.loading}
+      logoImage = { require ( "../../images/logotipo.png" ) } 
+      backgroundColor = { "#E7E6F3" } 
+      logoHeight = { 170 } 
+      logoWidth = { 170 } 
+              
     >
     </AnimatedSplash>
       : <BackgroundBack> 

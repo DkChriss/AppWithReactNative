@@ -181,15 +181,15 @@ const storeContactScreen = (props) =>{
         
         return (
            // <ActivityIndicator animating={true} color='blue' />
-          <AnimatedSplash
-           translucent={true}
-           isLoaded={loading}
-           logoImage={require('../../images/logotipo.png')}
-           backgroundColor={"#685CBD"}
-           logoHeight={150}
-           logoWidth={150}
-         >
-         </AnimatedSplash>
+        <AnimatedSplash
+            translucent={true}
+            isLoaded={loading}
+            logoImage = { require ( "../../images/logotipo.png" ) } 
+            backgroundColor = { "#E7E6F3" } 
+            logoHeight = { 170 } 
+            logoWidth = { 170 } 
+        >
+        </AnimatedSplash>
         )
     }
 
