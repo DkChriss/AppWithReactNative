@@ -15,6 +15,7 @@ import firebase from '../../database/firebase'
 //Componentes
 import { theme } from '../../core/theme'
 import Button from '../../components/button'
+import AnimatedSplash from 'react-native-animated-splash-screen';
 import BackgroundBack from '../../components/backgroundBack'
 const defaultImage = require('../../images/add-person.png')
 const defaultImageUri = Image.resolveAssetSource(defaultImage).uri
@@ -110,7 +111,15 @@ export default class viewContactsScreen extends Component{
   render () {
     return (
       this.state.loading 
-      ? <ActivityIndicator animating={true} color={Colors.red800} />
+      ?<AnimatedSplash
+      translucent={true}
+      isLoaded={this.state.isLoaded}
+      logoImage={require('../../images/logotipo.png')}
+      backgroundColor={"#685CBD"}
+      logoHeight={150}
+      logoWidth={150}
+    >
+    </AnimatedSplash>
       : <BackgroundBack> 
         <View style={styles.container}>
               <View>

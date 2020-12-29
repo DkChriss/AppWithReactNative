@@ -5,7 +5,7 @@ import MapViewDirections from 'react-native-maps-directions'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import { ActivityIndicator, Colors } from 'react-native-paper'
-
+import AnimatedSplash from 'react-native-animated-splash-screen';
 //DB 
 import firebase from '../../database/firebase'
 //CONST
@@ -91,10 +91,19 @@ export default class Map extends Component {
         const destination = this.state.destination.location
         if (destination.latitude === 0 || destination.longitude === 0) {
             return (
-                <ActivityIndicator animating={true} color={Colors.red800} />
+                <AnimatedSplash
+                translucent={true}
+                isLoaded={this.state.isLoaded}
+                logoImage={require('../../images/logotipo.png')}
+                backgroundColor={"#685CBD"}
+                logoHeight={150}
+                logoWidth={150}
+              >
+              </AnimatedSplash>
             )
         }
         return (
+            
             <View>
                 <MapView
                     style={styles.map}
