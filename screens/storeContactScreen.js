@@ -1,16 +1,25 @@
-import React,{ Component } from 'react';
-import { StyleSheet, View, Image,Text } from 'react-native';
+import React,{ Component, useState, useEffect, useRef } from 'react';
+import { 
+    StyleSheet, 
+    View, 
+    Image, 
+    ScrollView,
+    Text
+} from 'react-native';
+
+//Componentes
 import TextInput from '../components/TextInput';
 import Button from '../components/button';
 import Background from '../components/background';
 import { theme } from '../core/theme'
-import { useState } from 'react';
-import { useEffect } from 'react';
 
+//Paquetes
+import { ActivityIndicator, Colors, Switch} from 'react-native-paper';
+import { Avatar, ListItem, Icon } from "react-native-elements"
+import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
-
-import { ActivityIndicator, Colors, Switch } from 'react-native-paper';
+import RBSheet from "react-native-raw-bottom-sheet";
 
 //DB
 import firebase from '../database/firebase'
@@ -43,9 +52,18 @@ const storeContactScreen = (props) =>{
     //LOADING SCREEN
     const [loading, setLoading] = useState(true)
 
+    //User
+    const user = firebase.firebase.auth().currentUser;
+
+    //Profile Picture
+    const refRBSheet = useRef();
+    const defaultImage = require('../images/add-person.png');
+    const defaultImageUri = Image.resolveAssetSource(defaultImage).uri;
+    const [selectedImage, setSelectedImage] = useState({ localUri: defaultImageUri});
+    const [sizePicture] = useState({value: 150})
+
     const store = () => {
         try {
-            let user = firebase.firebase.auth().currentUser;
             let geoPoint = {};
 
             if(isSwitchOn) {
@@ -61,6 +79,31 @@ const storeContactScreen = (props) =>{
                 number: number.value,
                 email: email.value,
                 location: geoPoint
+            }).then(function(docRef) {
+                const imageUri = selectedImage.localUri;
+                let namePicture = docRef.id;
+                if(imageUri != defaultImageUri) {
+                    uploadImage(imageUri)
+                        .then(resolve => {
+                            let ref = firebase.firebase
+                                .storage()
+                                .ref()
+                                .child(`Contacts/${user.email}/${namePicture}`);
+        
+                            ref.put(resolve).then(resolve =>{
+                                console.log('imagen subida');
+                            }).catch(error =>{
+                                console.log(error);
+                            });
+        
+                        })
+                        .catch(error =>{
+                            console.log(error);
+                        });
+                }
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
             });
 
             //REDIRECCIONAR
@@ -119,11 +162,101 @@ const storeContactScreen = (props) =>{
             <ActivityIndicator animating={true} color={Colors.red800} />
         )
     }
-        
-    return(
-            <Background>
+
+    const uploadImage = (uri) => {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.onerror = reject;
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState === 4){
+                    resolve(xhr.response);
+                }
+            };
+
+            xhr.open("GET", uri);
+            xhr.responseType = "blob";
+            xhr.send();
+        });
+    };
+
+    const openImagePickerAsync = async () => {
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    
+        if (permissionResult.granted === false) {
+            alert("Permission to access camera roll is required!");
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        if (pickerResult.cancelled === true) {
+            return;
+        }
+
+        sizePicture.value = 200;
+        setSelectedImage({ localUri: pickerResult.uri });
+        refRBSheet.current.close();
+    }
+    
+    const openCamareAsync = async () => {
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    
+        if (permissionResult.granted === false) {
+          alert("Permission to access camera roll is required!");
+          return;
+        }
+
+        let pickerResult = await ImagePicker.launchCameraAsync();
+        if (pickerResult.cancelled === true) {
+            return;
+        }
+
+        sizePicture.value = 200;
+        setSelectedImage({ localUri: pickerResult.uri });
+        refRBSheet.current.close();
+    }
+
+    const deletePicture = () => {
+        setSelectedImage({ localUri: defaultImageUri});
+        sizePicture.value = 150;
+        refRBSheet.current.close();
+    }
+
+    const eliminarFoto = ()  => { 
+        console.log(selectedImage.localUri);
+        if(selectedImage.localUri != defaultImageUri){  
+            sizePicture.value = 200;
+            return(
+                <ListItem onPress={deletePicture}>
+                    <ListItem.Content>
+                        <ListItem.Title>Eliminar Foto</ListItem.Title>
+                    </ListItem.Content>
+                </ListItem>
+            )
+        }
+        return;
+    }
+
+    return(    
+        <Background> 
+            <ScrollView  style={styles.scrollView}>
                 <View style={styles.container}>
-                    <Image source={require('../images/user.jpg')} style={styles.image} />    
+                    <Avatar
+                        size="large"
+                        onPress={() => refRBSheet.current.open()}
+                        rounded
+                        source={{
+                            uri: selectedImage.localUri     
+                        }}
+                        containerStyle={{
+                            backgroundColor: 'grey',
+                            alignSelf: 'center',
+                            justifyContent: 'center'}}>
+                        <Avatar.Accessory  
+                                {...styles.Accessory}
+                                size={20}
+                                onPress={() => refRBSheet.current.open()}
+                            />
+                    </Avatar>   
                     <TextInput
                         label="Nombre"
                         returnKeyType="done"
@@ -140,6 +273,7 @@ const storeContactScreen = (props) =>{
                         autoCapitalize="words"
                         autoCompleteType="name"
                     />
+                    
                     <TextInput
                         label="Apellido"
                         returnKeyType="done"
@@ -169,6 +303,7 @@ const storeContactScreen = (props) =>{
                         error={!!alias.error}
                         errorText={alias.error}
                     />
+
                     <TextInput
                         label="Numero de Celular"
                         returnKeyType="done"
@@ -185,6 +320,7 @@ const storeContactScreen = (props) =>{
                         textContentType="telephoneNumber"
                         keyboardType="number-pad"
                     />
+
                     <TextInput
                         label="Correo electronico"
                         returnKeyType="done"
@@ -201,6 +337,7 @@ const storeContactScreen = (props) =>{
                         textContentType="emailAddress"
                         keyboardType="email-address"
                     />
+
                     <Text>
                         {enableSwitch.text}
                     </Text>
@@ -212,12 +349,47 @@ const storeContactScreen = (props) =>{
                     />
                     <Button
                         mode="contained"
-                        onPress={ validateFields }
-                    >
+                        onPress={ validateFields }>
                         Guardar Contacto
                     </Button>
                 </View>
-            </Background>
+            </ScrollView>
+            <RBSheet
+                    ref={refRBSheet}
+                    closeOnDragDown={true}
+                    closeOnPressMask={false}
+                    height={sizePicture.value}
+                    customStyles={{
+                        wrapper: {
+                            backgroundColor: "transparent"
+                        },
+                        draggableIcon: {
+                            backgroundColor: "#000"
+                        }
+                    }}>
+                    <View>
+                        <ListItem onPress={openCamareAsync}>
+                            <Icon 
+                                name='camera'
+                                type='ionicon'
+                                />
+                            <ListItem.Content>
+                                <ListItem.Title>Tomar una Foto</ListItem.Title>
+                            </ListItem.Content>
+                        </ListItem>
+                        <ListItem onPress={openImagePickerAsync}>
+                            <Icon 
+                                name='image'
+                                type='ionicon'
+                                />
+                            <ListItem.Content>
+                                <ListItem.Title>Seleccionar una Foto</ListItem.Title>
+                            </ListItem.Content>
+                        </ListItem>
+                        {eliminarFoto()}
+                    </View>
+            </RBSheet>
+        </Background>
     );
 }
 
@@ -239,5 +411,13 @@ const styles= StyleSheet.create({
         textAlign:'center',
         backgroundColor: theme.colors.surface,
         fontFamily: 'Monospace-Monaco',
+    },    
+    scrollView: {
+        marginHorizontal: 0,
+    },  
+    Accessory: {
+        backgroundColor: theme.colors.primary,
+        borderRadius: 50,
+        borderColor: theme.colors.primary,
     }
 });

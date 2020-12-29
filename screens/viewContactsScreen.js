@@ -1,57 +1,103 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { 
   StyleSheet,
-  View
+  View,
+  Image,
+  TouchableOpacity,
+  Text
 } from 'react-native';
-import { FAB, Portal, Provider } from 'react-native-paper'
-import { useState } from 'react';
-import { useEffect } from 'react';
 import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
+import {Avatar as AvatarElement, Icon} from 'react-native-elements'; 
 
 //DB
 import firebase from '../database/firebase'
 //Componentes
 import { theme } from '../core/theme'
-import Header from '../components/header'
 import Button from '../components/button'
-import Logo from '../components/logo'
-import Background from '../components/background'
 import BackgroundBack from '../components/backgroundBack'
-
+const defaultImage = require('../images/add-person.png')
+const defaultImageUri = Image.resolveAssetSource(defaultImage).uri
 
 export default class viewContactsScreen extends Component{
 
   state = {
-    contacts: []
+    contacts: [],
+    name: '',
+    lastname: '',
+    selectedImage: defaultImageUri,
   }
-  _isMounted = false;
+  _unsubscribe = '';
+  _isMounted = false
+  user  = firebase.firebase.auth().currentUser
 
   componentDidMount() {
-    if (!this._isMounted) {
-      let user = firebase.firebase.auth().currentUser;
-      firebase.db.collection(user.email).onSnapshot(querySnapshot => {
-        let contacts = [];
-          querySnapshot.docs.forEach(value => {
-          const {name,lastname,alias} = value.data();
-          contacts.push({
-            id: value.id,
-            name,
-            lastname,
-            alias
-          });
-        })
-        this.setState({contacts: contacts});
+    this.initialPage()
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.initialPage();
+    })
+  }
+
+  initialPage() {
+    firebase.db.collection(this.user.email).onSnapshot(querySnapshot => {
+      let contacts = [];
+        querySnapshot.docs.forEach(value => {
+        const {name,lastname,alias} = value.data();
+        contacts.push({
+          id: value.id,
+          name,
+          lastname,
+          alias
+        });
       })
-    }
+      this.setState({  
+        ...this.state,
+        contacts: contacts
+      });
+    })
+    this.getData()
+    this.urlImage()
   }
   
   componentWillUnmount() {
-    this._isMounted = false;
+    this._isMounted = false
+    this._unsubscribe();
+  }
+  
+  async getData(){
+    let dbRef = firebase.db.collection('users').doc(this.user.uid);
+    let doc = await dbRef.get();
+    let userData = doc.data();
+    this.setState({
+      ...this.state,
+      name: userData.name,
+      lastname: userData.lastname
+    });
+  }
+
+  urlImage () {
+    let url = "";
+    firebase.firebase
+      .storage()
+      .ref(`images/${this.user.uid}`)
+      .getDownloadURL()
+      .then(resolve =>{
+          url = resolve
+          this.setState({
+            ...this.state,
+            selectedImage: url
+          })
+      })
+      .catch(error =>{
+          console.log(error);
+          this.setState({
+            ...this.state,
+            selectedImage: defaultImageUri
+          })
+      })
   }
 
   destroyContact = async (id) => {
-    let user = firebase.firebase.auth().currentUser;
-    let dbRef = firebase.db.collection(user.email).doc(id)
+    let dbRef = firebase.db.collection(this.user.email).doc(id)
     await dbRef.delete();
   }
 
@@ -59,11 +105,28 @@ export default class viewContactsScreen extends Component{
     return (
       <BackgroundBack> 
         <View style={styles.container}>
-              <Button 
-                mode="contained"
-                onPress={() => this.props.navigation.navigate('Update')}>
-                Actualizar Datos
-              </Button>
+              <View>
+                <AvatarElement
+                      size="large"
+                      rounded
+                      source={{
+                          uri: this.state.selectedImage
+                      }}
+                      containerStyle={{
+                          backgroundColor: 'grey'}}/> 
+              </View>
+
+                <View style={{
+                    marginTop: -65,
+                    paddingLeft: 100,
+                    alignSelf: 'flex-start',}}
+                    >
+                      <Text style={styles.title}>{this.state.name + " " + this.state.lastname}</Text>
+                      <TouchableOpacity  onPress={() => this.props.navigation.navigate('Update')}>
+                        <Text style={styles.link}>Editar perfil</Text>
+                      </TouchableOpacity>
+                </View> 
+              
           {
             this.state.contacts.map(contact => {
               return (
@@ -83,11 +146,15 @@ export default class viewContactsScreen extends Component{
                         <IconButton {...props} icon="delete" 
                         color={Colors.red800}
                         onPress={() => {this.destroyContact(contact.id)}} />
-                        <IconButton {...props} icon="pencil" onPress={() => {
-                          this.props.navigation.navigate('MapContact', {
-                          userId: contact.id
-                          })
-                        }} />
+                        <Icon {...props}
+                            name='location'
+                            type='ionicon'
+                            onPress={() => {
+                              navigation.navigate('MapContact', {
+                              userId: contact.id
+                              })
+                            }} 
+                        />
                       </Card.Actions>
                     }
                   />
@@ -122,5 +189,8 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  title :{
+    fontSize: 25,
   }
 });
