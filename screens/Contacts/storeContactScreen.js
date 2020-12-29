@@ -64,6 +64,7 @@ const storeContactScreen = (props) =>{
 
     const store = () => {
         try {
+            setLoading(true)
             let geoPoint = {};
 
             if(isSwitchOn) {
@@ -85,17 +86,16 @@ const storeContactScreen = (props) =>{
                 if(imageUri != defaultImageUri) {
                     uploadImage(imageUri)
                         .then(resolve => {
-                            let ref = firebase.firebase
-                                .storage()
+                            //CREATE REFERENCES
+                            let ref = firebase.firebase.storage()
                                 .ref()
-                                .child(`Contacts/${user.email}/${namePicture}`);
-        
+                                .child(`Contacts/${user.email}/${namePicture}`)
+                            //UPLOAD FILE
                             ref.put(resolve).then(resolve =>{
-                                console.log('imagen subida');
+                                addProfilePicture(docRef.id)
                             }).catch(error =>{
                                 console.log(error);
                             });
-        
                         })
                         .catch(error =>{
                             console.log(error);
@@ -104,13 +104,32 @@ const storeContactScreen = (props) =>{
             })
             .catch(function(error) {
                 console.error("Error adding document: ", error);
-            });
-
-            //REDIRECCIONAR
-            props.navigation.navigate('ViewContacts')
+            })
         } catch (e) {
             console.log(e);
+            setLoading(false)
         }
+    }
+
+    const addProfilePicture = async (id) => {
+        let user = firebase.firebase.auth().currentUser
+        let dbRef = firebase.db.collection(user.email).doc(id)
+        firebase.firebase
+        .storage()
+        .ref(`Contacts/${user.email}/${dbRef.id}`)
+        .getDownloadURL()
+        .then(resolve =>{
+            let url = resolve
+            dbRef.update({
+                profilePicture: url
+            })
+        })
+        .catch(error =>{
+            console.log(error);
+        }).finally(() => {
+            setLoading(false)
+            props.navigation.navigate('ViewContacts')
+        })
     }
 
     const  validateFields = () => {
@@ -172,7 +191,6 @@ const storeContactScreen = (props) =>{
                     resolve(xhr.response);
                 }
             };
-
             xhr.open("GET", uri);
             xhr.responseType = "blob";
             xhr.send();
@@ -201,8 +219,8 @@ const storeContactScreen = (props) =>{
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
         if (permissionResult.granted === false) {
-          alert("Permission to access camera roll is required!");
-          return;
+            alert("Permiso requerido!");
+            return;
         }
 
         let pickerResult = await ImagePicker.launchCameraAsync();
@@ -222,7 +240,6 @@ const storeContactScreen = (props) =>{
     }
 
     const eliminarFoto = ()  => { 
-        console.log(selectedImage.localUri);
         if(selectedImage.localUri != defaultImageUri){  
             sizePicture.value = 200;
             return(
