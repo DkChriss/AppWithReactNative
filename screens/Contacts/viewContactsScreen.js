@@ -6,9 +6,8 @@ import {
   TouchableOpacity,
   Text
 } from 'react-native';
-import { Card, Avatar, IconButton, Colors } from 'react-native-paper';
+import { Card, Avatar, IconButton, ActivityIndicator, Colors } from 'react-native-paper';
 import {Avatar as AvatarElement, Icon} from 'react-native-elements'; 
-
 //DB
 import firebase from '../../database/firebase'
 //Componentes
@@ -21,12 +20,13 @@ const defaultImageUri = Image.resolveAssetSource(defaultImage).uri
 export default class viewContactsScreen extends Component{
 
   state = {
-    contacts: [],
     name: '',
     lastname: '',
     selectedImage: defaultImageUri,
+    contacts: [],
+    loading: true,
   }
-  _unsubscribe = '';
+  _unsubscribe = ''
   _isMounted = false
   user  = firebase.firebase.auth().currentUser
 
@@ -36,17 +36,20 @@ export default class viewContactsScreen extends Component{
       this.initialPage();
     })
   }
-
   initialPage() {
+    this.getData()
+    this.urlImage()
+    //ARRAY OBJECTS
     firebase.db.collection(this.user.email).onSnapshot(querySnapshot => {
       let contacts = [];
         querySnapshot.docs.forEach(value => {
-        const {name,lastname,alias} = value.data();
+        const {name,lastname,alias,profilePicture} = value.data();
         contacts.push({
           id: value.id,
           name,
           lastname,
-          alias
+          alias,
+          profilePicture
         });
       })
       this.setState({  
@@ -54,15 +57,13 @@ export default class viewContactsScreen extends Component{
         contacts: contacts
       });
     })
-    this.getData()
-    this.urlImage()
   }
   
   componentWillUnmount() {
     this._isMounted = false
     this._unsubscribe();
   }
-  
+
   async getData(){
     let dbRef = firebase.db.collection('users').doc(this.user.uid);
     let doc = await dbRef.get();
@@ -93,6 +94,8 @@ export default class viewContactsScreen extends Component{
             ...this.state,
             selectedImage: defaultImageUri
           })
+      }).finally(() => {
+        this.setState({...this.state,loading: false})
       })
   }
 
@@ -103,18 +106,20 @@ export default class viewContactsScreen extends Component{
 
   render () {
     return (
-      <BackgroundBack> 
+      this.state.loading 
+      ? <ActivityIndicator animating={true} color={Colors.red800} />
+      : <BackgroundBack> 
         <View style={styles.container}>
               <View>
                 <AvatarElement
-                      size="large"
-                      rounded
-                      source={{
-                          uri: this.state.selectedImage
-                      }}
-                      containerStyle={{
-                          backgroundColor: 'grey'}}/> 
-                      
+                  size="large"
+                  rounded
+                  source={{
+                      uri: this.state.selectedImage
+                  }}
+                  containerStyle={{
+                      backgroundColor: 'grey'}}
+                /> 
               </View>
 
                 <View style={{
@@ -130,13 +135,20 @@ export default class viewContactsScreen extends Component{
                 </View> 
               
           {
-            this.state.contacts.map(contact => {
+            this.state.contacts.map(contact => {      
               return (
                 <Card key={contact.id} style={styles.file}>
                   <Card.Title
                     title={contact.alias}
                     subtitle={contact.name+" "+contact.lastname}
-                    left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                    left={
+                      (props) => <AvatarElement {...props} source={{ uri: contact.profilePicture }} size="medium"
+                        title={contact.name}
+                        rounded
+                        containerStyle={{
+                            backgroundColor: 'grey'}}
+                        /> 
+                    }
                     right={
                       (props) => 
                       <Card.Actions>
@@ -152,8 +164,8 @@ export default class viewContactsScreen extends Component{
                             name='location'
                             type='ionicon'
                             onPress={() => {
-                              navigation.navigate('MapContact', {
-                              userId: contact.id
+                              this.props.navigation.navigate('MapContact', {
+                                userId: contact.id
                               })
                             }} 
                         />
