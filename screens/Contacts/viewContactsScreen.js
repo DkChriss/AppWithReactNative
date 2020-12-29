@@ -147,6 +147,9 @@ export default class viewContactsScreen extends Component{
                       <TouchableOpacity  onPress={() => this.props.navigation.navigate('Update')}>
                         <Text style={styles.link}>Editar perfil</Text>
                       </TouchableOpacity>
+                      <TouchableOpacity  onPress={() => this.props.navigation.navigate('MapGlobal',{userId: this.user.uid})}>
+                        <Text style={styles.link}>Mapa Global</Text>
+                      </TouchableOpacity>
                 </View> 
               
           {
