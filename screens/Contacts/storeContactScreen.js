@@ -336,10 +336,11 @@ const storeContactScreen = (props) =>{
                         keyboardType="email-address"
                     />
 
-                    <Text>
+                    <Text style= {{marginRight: 150, flex:1, flexDirection: 'column'}}>
                         {enableSwitch.text}
                     </Text>
                     <Switch
+                    style= {{marginLeft: 150, flex: 1, marginTop: -20}}
                         value={isSwitchOn} 
                         onValueChange={onToggleSwitch} 
                         tintColor='#DEDEDE'
