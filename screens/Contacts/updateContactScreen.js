@@ -15,6 +15,8 @@ import TextInput from '../../components/TextInput';
 import Button from '../../components/button';
 import Background from '../../components/background';
 import { theme } from '../../core/theme'
+import AnimatedSplash from 'react-native-animated-splash-screen';
+
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
@@ -226,7 +228,15 @@ const storeContactScreen = (props) =>{
 
     if(loading) {
         return (
-            <ActivityIndicator animating={true} color={Colors.red800} />
+            <AnimatedSplash
+            translucent={true}
+            isLoaded={loading}
+            logoImage={require('../../images/logotipo.png')}
+            backgroundColor={"#685CBD"}
+            logoHeight={150}
+            logoWidth={150}
+          >
+          </AnimatedSplash>
         )
     }
     function urlImage () {

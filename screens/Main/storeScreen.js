@@ -18,6 +18,7 @@ import TextInput from '../../components/TextInput'
 import Header from '../../components/header'
 import Button from '../../components/button'
 import Background from '../../components/background'
+import AnimatedSplash from 'react-native-animated-splash-screen';
 
 import { Avatar, ListItem, Icon } from "react-native-elements"
 import * as ImagePicker from 'expo-image-picker'

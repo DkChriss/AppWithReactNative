@@ -16,6 +16,7 @@ import TextInput from '../../components/TextInput'
 import Header from '../../components/header'
 import Button from '../../components/button'
 import Background from '../../components/background'
+import AnimatedSplash from 'react-native-animated-splash-screen';
 
 import { Avatar, ListItem, Icon } from "react-native-elements"
 import * as ImagePicker from 'expo-image-picker'
@@ -178,7 +179,15 @@ const storeScreen = (props) => {
 
     if(loading) {
         return (
-            <ActivityIndicator animating={true} color={Colors.red800} />
+            <AnimatedSplash
+      translucent={true}
+      isLoaded={loading}
+      logoImage={require('../../images/logotipo.png')}
+      backgroundColor={"#685CBD"}
+      logoHeight={150}
+      logoWidth={150}
+    >
+    </AnimatedSplash>
         )
     }
 

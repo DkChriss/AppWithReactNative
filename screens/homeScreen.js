@@ -9,6 +9,7 @@ import Button from '../components/button';
 import Logo from '../components/logo';
 import Header from '../components/header';
 
+
 //Styles
 import { theme } from '../core/theme'
 
@@ -16,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <BackgroundLogin>
             <Logo />
-            <Header>ScannerFriends</Header>
+            <Header>ScannerFriendsss</Header>
             <Button mode="contained" onPress={() => navigation.navigate('Login')}>
                 Iniciar Sesion
             </Button>

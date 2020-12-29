@@ -30,7 +30,8 @@ import { textValidator } from '../../helpers/textValidatorOne';
 import { lastNameValidator } from '../../helpers/lastNameValidator';
 import { nickNameValidator } from "../../helpers/nickNameValidator";
 import { numberValidator } from "../../helpers/numberValidator";
-
+import AnimatedSplash from 'react-native-animated-splash-screen';
+import { render } from 'react-dom';
 
 const storeContactScreen = (props) =>{
 
@@ -177,10 +178,21 @@ const storeContactScreen = (props) =>{
     }, [])
 
     if(loading) {
+        
         return (
-            <ActivityIndicator animating={true} color={Colors.red800} />
+           // <ActivityIndicator animating={true} color='blue' />
+          <AnimatedSplash
+           translucent={true}
+           isLoaded={loading}
+           logoImage={require('../../images/logotipo.png')}
+           backgroundColor={"#685CBD"}
+           logoHeight={150}
+           logoWidth={150}
+         >
+         </AnimatedSplash>
         )
     }
+
 
     const uploadImage = (uri) => {
         return new Promise((resolve, reject) => {
@@ -253,7 +265,7 @@ const storeContactScreen = (props) =>{
         return;
     }
 
-    return(    
+    return(  
         <Background> 
                     <Avatar
                         size="large"
