@@ -4,18 +4,21 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { theme } from '../core/theme'
 
 
-const background = ({ children }) => (
-  <ImageBackground
-   // resizeMode="repeat"
-    style={styles.background}
-    source={require('../images/background.png')}
-  >
-   <ScrollView>
-      <View style={styles.container}>
-           {children}
-      </View>
-    </ScrollView>
-  </ImageBackground>
+const backgroundLogin = ({ children }) => (
+    <ImageBackground
+    // resizeMode="repeat"
+     style={styles.background}
+     source={require('../images/background.png')}
+   >
+     <ScrollView contentContainerStyle={{
+        flex: 1,
+        justifyContent: 'center'
+     }}>
+       <View style={styles.container}>
+            {children}
+       </View>
+     </ScrollView>
+   </ImageBackground>
 )
 
 const styles = StyleSheet.create({
@@ -35,4 +38,4 @@ const styles = StyleSheet.create({
     }, 
 })
 
-export default background
+export default backgroundLogin

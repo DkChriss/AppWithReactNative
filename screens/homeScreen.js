@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 //Componentes
-import Background from '../components/background';
+import BackgroundLogin from '../components/backgroundLogin';
 import Button from '../components/button';
 import Logo from '../components/logo';
 import Header from '../components/header';
@@ -14,7 +14,7 @@ import { theme } from '../core/theme'
 
 const HomeScreen = ({ navigation }) => {
     return (
-        <Background>
+        <BackgroundLogin>
             <Logo />
             <Header>ScannerFriends</Header>
             <Button mode="contained" onPress={() => navigation.navigate('Login')}>
@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
             <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
                 Registrarse
             </Button>
-        </Background>
+        </BackgroundLogin>
     )
 }
 

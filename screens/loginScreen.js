@@ -61,51 +61,51 @@ const loginScreen = ({ navigation }) => {
 
   return (
   
-      <Background >
+      <Background>
       
-      <Logo></Logo>
-      <Header>
-        Bienvenido
-      </Header>
-      <TextInput
-        label="Correo electronico"
-        returnKeyType="done"
-        value={email.value}
-        onChangeText={(text) => setEmail({value: text, error: ''})}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Contraseña"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({value: text, error: ''})}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      <View style={styles.forgotPassword}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ForgotPassword')}
-          >
-            <Text style={styles.forgot}>¿Olvidaste tu contraseña?</Text>
-          </TouchableOpacity>
-        </View>
-        <Button 
-          mode="contained" 
-          onPress={ onLoginPressed }>
-          Iniciar Sesion
-        </Button>
-        <View style={styles.row}>
-          <Text>¿No tienes cuenta? </Text>
-          <TouchableOpacity onPress={() => navigation.replace('Register')}>
-            <Text style={styles.link}>Registrarse</Text>
-          </TouchableOpacity>
-        </View>
+        <Logo></Logo>
+        <Header>
+          Bienvenido
+        </Header>
+        <TextInput
+          label="Correo electronico"
+          returnKeyType="done"
+          value={email.value}
+          onChangeText={(text) => setEmail({value: text, error: ''})}
+          error={!!email.error}
+          errorText={email.error}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <TextInput
+          label="Contraseña"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={(text) => setPassword({value: text, error: ''})}
+          error={!!password.error}
+          errorText={password.error}
+          secureTextEntry
+        />
+        <View style={styles.forgotPassword}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ForgotPassword')}
+            >
+              <Text style={styles.forgot}>¿Olvidaste tu contraseña?</Text>
+            </TouchableOpacity>
+          </View>
+          <Button 
+            mode="contained" 
+            onPress={ onLoginPressed }>
+            Iniciar Sesion
+          </Button>
+          <View style={styles.row}>
+            <Text>¿No tienes cuenta? </Text>
+            <TouchableOpacity onPress={() => navigation.replace('Register')}>
+              <Text style={styles.link}>Registrarse</Text>
+            </TouchableOpacity>
+          </View>
        
     </Background>
   );
