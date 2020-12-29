@@ -46,7 +46,7 @@ export default class viewContactsScreen extends Component{
     this.getData()
     this.urlImage()
     //ARRAY OBJECTS
-    firebase.db.collection(this.user.email).orderBy('name').onSnapshot(querySnapshot => {
+    firebase.db.collection(this.user.email).orderBy('alias').onSnapshot(querySnapshot => {
       let contacts = [];
         querySnapshot.docs.forEach(value => {
         const {name,lastname,alias,profilePicture} = value.data();
