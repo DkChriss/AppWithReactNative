@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <BackgroundLogin>
             <Logo />
-            <Header>ScannerFriendsss</Header>
+            <Header>ScannerFriends</Header>
             <Button mode="contained" onPress={() => navigation.navigate('Login')}>
                 Iniciar Sesion
             </Button>

@@ -102,6 +102,10 @@ const storeContactScreen = (props) =>{
                             console.log(error);
                         });
                 }
+                else{
+                    setLoading(false)
+                    props.navigation.navigate('ViewContacts')
+                }
             })
             .catch(function(error) {
                 console.error("Error adding document: ", error);

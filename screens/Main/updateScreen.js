@@ -77,16 +77,20 @@ const storeScreen = (props) => {
                             .ref()
                             .child(`images/${namePicture}`)
                         ref.put(resolve).then(resolve =>{
-                            props.navigation.navigate('ViewContacts')
-                            setLoading(false)
                         }).catch(error =>{
                             console.log(error);
-                        });
-
+                        }).finally(() =>{
+                            setLoading(false)
+                            props.navigation.navigate('ViewContacts')
+                        })
                     })
                     .catch(error =>{
                         console.log(error);
                     });
+            }
+            else{
+                setLoading(false)
+                props.navigation.navigate('ViewContacts')
             }
         } catch (e) {
             console.log(e);
